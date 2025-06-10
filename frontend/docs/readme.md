@@ -156,3 +156,29 @@ src/
 
 ---
 
+## 🔄 Important Updates
+
+### June 9, 2025 - Tailwind CSS PostCSS Plugin Update
+
+The Tailwind CSS PostCSS plugin has moved to a separate package. Here's how to update your configuration:
+
+1. **Install New Package:**
+```bash
+npm install -D @tailwindcss/postcss
+```
+
+2. **Update PostCSS Configuration:**
+```javascript
+// postcss.config.js (ES Modules)
+export default {
+  plugins: {
+    '@tailwindcss/postcss': {},
+    autoprefixer: {},
+  }
+}
+```
+
+If you encounter any issues with this update, refer to the detailed documentation in `docs/postcss-esmodule-error.md`.
+
+---
+
