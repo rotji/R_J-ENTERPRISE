@@ -1,11 +1,11 @@
-import { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
-import ErrorBoundary from './components/ErrorBoundary';
+import { Suspense, lazy } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Header from "./components/Header";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 // Lazy load routes for better performance
-const Home = lazy(() => import('./pages/Home'));
-const About = lazy(() => import('./pages/About'));
+const Home = lazy(() => import("./pages/Home"));
+const About = lazy(() => import("./pages/About"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -20,7 +20,9 @@ function App() {
       <ErrorBoundary>
         <div className="min-h-screen bg-gray-50">
           <Header />
-          <main className="container mx-auto px-4 pt-16">
+          <main className="pt-[73px] px-4 container mx-auto">
+            {" "}
+            {/* Added padding-top to account for fixed header */}
             <Suspense fallback={<LoadingFallback />}>
               <Routes>
                 <Route path="/" element={<Home />} />
