@@ -10,7 +10,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white shadow-md fixed w-full top-0 z-50">
+    <header className="bg-black shadow-md fixed w-full top-0 z-50">
       <nav className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           {/* Logo and Project Name */}
@@ -20,7 +20,7 @@ const Header = () => {
                 R_J
               </span>
             </div>
-            <span className="text-lg md:text-xl font-bold text-gray-800">
+            <span className="text-lg md:text-xl font-bold text-white">
               R_J ENTERPRISE
             </span>
           </div>
@@ -29,13 +29,13 @@ const Header = () => {
           <div className="hidden md:flex items-center space-x-8">
             <Link
               to="/"
-              className="text-gray-600 hover:text-gray-900 font-medium transition-colors duration-200"
+              className="text-white hover:text-gray-900 font-medium transition-colors duration-200"
             >
               Home
             </Link>
             <Link
               to="/about"
-              className="text-gray-600 hover:text-gray-900 font-medium transition-colors duration-200"
+              className="text-white hover:text-gray-900 font-medium transition-colors duration-200"
             >
               About
             </Link>
@@ -48,9 +48,9 @@ const Header = () => {
             aria-label="Toggle menu"
           >
             {isMenuOpen ? (
-              <X size={24} className="text-gray-600" />
+              <X size={24} className="text-white" />
             ) : (
-              <Menu size={24} className="text-gray-600" />
+              <Menu size={24} className="text-white" />
             )}
           </button>
         </div>
@@ -77,14 +77,14 @@ const Header = () => {
           <div className="container mx-auto px-4 py-4 flex flex-col space-y-4">
             <Link
               to="/"
-              className="text-gray-600 hover:text-gray-900 font-medium transition-colors duration-200 px-4 py-2 rounded-lg hover:bg-gray-50"
+              className="text-white hover:text-gray-900 font-medium transition-colors duration-200 px-4 py-2 rounded-lg hover:bg-gray-50"
               onClick={() => setIsMenuOpen(false)}
             >
               Home
             </Link>
             <Link
               to="/about"
-              className="text-gray-600 hover:text-gray-900 font-medium transition-colors duration-200 px-4 py-2 rounded-lg hover:bg-gray-50"
+              className="text-white hover:text-gray-900 font-medium transition-colors duration-200 px-4 py-2 rounded-lg hover:bg-gray-50"
               onClick={() => setIsMenuOpen(false)}
             >
               About
