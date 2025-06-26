@@ -11,6 +11,7 @@ const Header = () => {
 
   return (
     <header className="bg-white shadow-md fixed w-full top-0 z-50">
+    <header className="bg-black shadow-md fixed w-full top-0 z-50">
       <nav className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           {/* Logo and Project Name */}
@@ -21,21 +22,18 @@ const Header = () => {
               </span>
             </div>
             <span className="text-lg md:text-xl font-bold text-gray-800">
-              R_J ENTERPRISE
             </span>
-          </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             <Link
               to="/"
               className="text-gray-600 hover:text-gray-900 font-medium transition-colors duration-200"
-            >
               Home
-            </Link>
             <Link
               to="/about"
               className="text-gray-600 hover:text-gray-900 font-medium transition-colors duration-200"
+              className="text-white hover:text-gray-900 font-medium transition-colors duration-200"
             >
               About
             </Link>
@@ -51,6 +49,9 @@ const Header = () => {
               <X size={24} className="text-gray-600" />
             ) : (
               <Menu size={24} className="text-gray-600" />
+              <X size={24} className="text-white" />
+            ) : (
+              <Menu size={24} className="text-white" />
             )}
           </button>
         </div>
@@ -78,6 +79,7 @@ const Header = () => {
             <Link
               to="/"
               className="text-gray-600 hover:text-gray-900 font-medium transition-colors duration-200 px-4 py-2 rounded-lg hover:bg-gray-50"
+              className="text-white hover:text-gray-900 font-medium transition-colors duration-200 px-4 py-2 rounded-lg hover:bg-gray-50"
               onClick={() => setIsMenuOpen(false)}
             >
               Home
@@ -85,6 +87,7 @@ const Header = () => {
             <Link
               to="/about"
               className="text-gray-600 hover:text-gray-900 font-medium transition-colors duration-200 px-4 py-2 rounded-lg hover:bg-gray-50"
+              className="text-white hover:text-gray-900 font-medium transition-colors duration-200 px-4 py-2 rounded-lg hover:bg-gray-50"
               onClick={() => setIsMenuOpen(false)}
             >
               About
