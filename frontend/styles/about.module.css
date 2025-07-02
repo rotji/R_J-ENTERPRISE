@@ -1,0 +1,24 @@
+.aboutContainer {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+.aboutTitle {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+.aboutIntro {
+  font-size: 1.1rem;
+  margin-bottom: 1.2rem;
+}
+.aboutSectionTitle {
+  font-size: 1.3rem;
+  margin: 1.2rem 0 0.5rem;
+}
+.aboutSectionText {
+  font-size: 1.05rem;
+  margin-bottom: 1.2rem;
+}
+.aboutSectionTextLast {
+  font-size: 1.05rem;
+}

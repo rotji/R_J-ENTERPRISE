@@ -1,0 +1,12 @@
+.appRoot {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.mainContent {
+  flex: 1;
+  position: relative;
+  min-height: 0;
+  margin: 3rem 0;
+}
