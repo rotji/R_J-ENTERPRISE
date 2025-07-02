@@ -347,3 +347,4 @@ These tools improve error tracking, debugging, and backend observability during 
 create a folder mkdir logs in our backend path then create file error.log and combined.log
 ---
 
+i have decided to start using module.css in my project as oppose to tailwind.css
