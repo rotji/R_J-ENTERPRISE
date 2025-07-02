@@ -1,0 +1,24 @@
+.homeContainer {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+.homeTitle {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+.homeIntro {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+.homeList {
+  font-size: 1.05rem;
+  margin-bottom: 1.5rem;
+  padding-left: 1.2rem;
+}
+.homeList li {
+  margin-bottom: 0.3rem;
+}
+.homeOutro {
+  font-size: 1.05rem;
+}
