@@ -1,40 +1,32 @@
-import { Suspense, lazy } from "react";
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 import ErrorBoundary from "./components/ErrorBoundary";
+import Sidebar from "./components/Sidebar";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import appStyles from "../styles/app.module.css";
 
-// Lazy load routes for better performance
-const Home = lazy(() => import("./pages/Home"));
-const About = lazy(() => import("./pages/About"));
-
-// Loading fallback component
-const LoadingFallback = () => (
-  <div className="flex items-center justify-center min-h-screen">
-    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
-  </div>
-);
-
-function App() {
+const App: React.FC = () => {
+  const [sidebarOpen, setSidebarOpen] = React.useState(false);
   return (
-    <Router>
+    <div className={appStyles.appRoot}>
       <ErrorBoundary>
-        <div className="min-h-screen bg-gray-50">
-          <Header />
-          <main className="pt-[73px] px-4 container mx-auto">
-            {" "}
-            {/* Added padding-top to account for fixed header */}
-            <Suspense fallback={<LoadingFallback />}>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/about" element={<About />} />
-                {/* Add more routes as needed */}
-              </Routes>
-            </Suspense>
+        <Router>
+          <Header onOpenSidebar={() => setSidebarOpen(true)} />
+          <main className={appStyles.mainContent}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+            </Routes>
+            <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
           </main>
-        </div>
+          <Footer />
+        </Router>
       </ErrorBoundary>
-    </Router>
+    </div>
   );
-}
+};
 
 export default App;
