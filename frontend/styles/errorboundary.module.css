@@ -1,0 +1,9 @@
+.errorBoundary {
+  padding: 2rem;
+  text-align: center;
+}
+
+.errorDetails {
+  white-space: pre-wrap;
+  color: #b91c1c;
+}

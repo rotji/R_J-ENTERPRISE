@@ -1,59 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Coding Best Practices Checklist</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    background: #f9f9f9;
-    color: #222;
-  }
-  h1, h2 {
-    color: #005a9c;
-  }
-  section {
-    background: white;
-    margin-bottom: 20px;
-    padding: 15px 25px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgb(0 0 0 / 0.1);
-  }
-  ul {
-    list-style-type: disc;
-    margin-left: 20px;
-  }
-  li {
-    margin-bottom: 6px;
-  }
-  button {
-    background: #005a9c;
-    color: white;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-bottom: 20px;
-  }
-  button:hover {
-    background: #004080;
-  }
-  pre {
-    background: #eee;
-    padding: 12px;
-    border-radius: 5px;
-    max-height: 320px;
-    overflow-y: auto;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-  }
-</style>
-</head>
-<body>
-
 <h1>✅ Coding Best Practices Checklist</h1>
 
 <button id="copyBtn">Copy All Checklist</button>
@@ -173,6 +117,7 @@
     <li>Use Meaningful Names: Use clear, descriptive names for variables, functions, and files.</li>
     <li>Write Small, Focused Functions: Each function should do one thing well.</li>
     <li>Consistent Code Formatting: Use a linter (e.g., ESLint) and formatter (e.g., Prettier).</li>
+    <li>Use CSS Modules (e.g., ComponentName.module.css): Each component and page should have its own module.css file for scoped, maintainable styles where necessary.</li>
     <li>Handle Errors Gracefully: Use proper error handling (try-catch, fallback logic, user-friendly messages).</li>
     <li>Comment Why, Not What: Explain why something is done, not just what it does.</li>
     <li>Organize Files and Folders Clearly: Use a logical structure (/components, /utils, /services, /constants).</li>
@@ -296,27 +241,29 @@
 </html>
 
 HOW TO SPEED UP YOUR APPLICATION
-  below are 6 points to speed up your application
-  1. perform code optimization
-  2. image and media optimization
-  3. manage plugins and scripts
-  4. server and hosting upgrades
-  5. google pagespeed insight
-  6. using cloudflare
+below are 6 points to speed up your application
 
-  TEN SYSTEM DESIGN PRINCIPLES TO BUILD SCALABLE , MAINTANABLE , AND RELIABLE APPLICATIONS
-  1. computer architecture: RAM, CPU, CACHE etc
-  2. production app architecture: CI/CD, load balancers, logging and monitoring
-  3. design requirements: theorem CAP, throughput, latency, and service objectives , and service level agreement
-  4. networking: TCP, UDP, DNS, IP ADDRESS
-  5. application layer protocols: HTTP, websockets, webRTC, MQTT
-  6. API design
-  7. caching and CDN(content delivery network)
-  8. proxy servers: forward and reverse proxy servers
-  9. load balancers
-  10. databases: database design including sharding, replication, ACID properties, vertical and horizontal scaling.
+1. perform code optimization
+2. image and media optimization
+3. manage plugins and scripts
+4. server and hosting upgrades
+5. google pagespeed insight
+6. using cloudflare
 
-  Understand the Problem Or You’re Just Guessing in Code
+TEN SYSTEM DESIGN PRINCIPLES TO BUILD SCALABLE , MAINTANABLE , AND RELIABLE APPLICATIONS
+
+1. computer architecture: RAM, CPU, CACHE etc
+2. production app architecture: CI/CD, load balancers, logging and monitoring
+3. design requirements: theorem CAP, throughput, latency, and service objectives , and service level agreement
+4. networking: TCP, UDP, DNS, IP ADDRESS
+5. application layer protocols: HTTP, websockets, webRTC, MQTT
+6. API design
+7. caching and CDN(content delivery network)
+8. proxy servers: forward and reverse proxy servers
+9. load balancers
+10. databases: database design including sharding, replication, ACID properties, vertical and horizontal scaling.
+
+Understand the Problem Or You’re Just Guessing in Code
 
 The biggest mistake most devs make isn’t syntax errors.
 It’s trying to solve a problem they don’t truly understand.
@@ -324,9 +271,9 @@ It’s trying to solve a problem they don’t truly understand.
 You open your code editor, confident you’ll fix it.
 But hours later:
 
-* Nothing works.
-* Everything’s broken.
-* And now you’ve made it worse.
+- Nothing works.
+- Everything’s broken.
+- And now you’ve made it worse.
 
 Why? Because you skipped the most important step:
 Understanding the problem.
@@ -338,10 +285,10 @@ But tech problems often lie beneath the surface.
 
 Before you write a single line of code, ask:
 
-* What’s the actual issue?
-* Can I replicate the bug?
-* Is it happening for all users or just a specific case?
-* Is the problem in the logic, the data, or the environment?
+- What’s the actual issue?
+- Can I replicate the bug?
+- Is it happening for all users or just a specific case?
+- Is the problem in the logic, the data, or the environment?
 
 Assumptions waste time.
 Clarity saves it.
@@ -357,10 +304,10 @@ But that often leads to more chaos.
 
 Instead, step back:
 
-* Map the flow
-* Check the inputs and outputs
-* Log values
-* Write down the expected vs actual behavior
+- Map the flow
+- Check the inputs and outputs
+- Log values
+- Write down the expected vs actual behavior
 
 Treat it like a detective case. Don’t move until the pieces make sense.
 
@@ -412,9 +359,9 @@ In tech, state refers to the memory of a system a snapshot of what's happening o
 
 This could include:
 
-* A user’s login session
-* The contents of a shopping cart
-* Where you left off in a video or form
+- A user’s login session
+- The contents of a shopping cart
+- Where you left off in a video or form
 
 If the system remembers this across interactions, it's dealing with state.
 
@@ -431,9 +378,9 @@ The next day, you come back the barista doesn’t remember you. You must reintro
 
 In tech:
 
-* Each HTTP request in a stateless API must contain all the information the server needs to fulfill it (e.g. tokens, credentials, parameters).
-* Once a request is handled, the server doesn’t keep any info about it.
-* Examples: REST APIs, DNS, HTTP by default
+- Each HTTP request in a stateless API must contain all the information the server needs to fulfill it (e.g. tokens, credentials, parameters).
+- Once a request is handled, the server doesn’t keep any info about it.
+- Examples: REST APIs, DNS, HTTP by default
 
 ✅ Stateful: Memory is maintained across interactions
 
@@ -444,9 +391,9 @@ That’s a stateful interaction the shop remembers you.
 
 In tech:
 
-* Sessions, user data, or progress is stored between interactions.
-* The server, client, or app tracks your activity or context over time.
-* Examples: Database connections, WebSockets, Sessions in web apps, Online games
+- Sessions, user data, or progress is stored between interactions.
+- The server, client, or app tracks your activity or context over time.
+- Examples: Database connections, WebSockets, Sessions in web apps, Online games
 
 🤯 Why the Confusion?
 
@@ -471,18 +418,18 @@ Not necessarily. Stateful systems are more complex to scale, manage, and recover
 
 💻 Web Development
 
-* Stateless: REST APIs, CDN-delivered assets
-* Stateful: Login sessions, shopping carts, user dashboards
+- Stateless: REST APIs, CDN-delivered assets
+- Stateful: Login sessions, shopping carts, user dashboards
 
 🧪 Testing & Debugging
 
-* Stateless apps are easier to test because each interaction is isolated.
-* Stateful apps require setting up a specific state before testing.
+- Stateless apps are easier to test because each interaction is isolated.
+- Stateful apps require setting up a specific state before testing.
 
 🕸️ System Design
 
-* Stateless systems scale better because any server can handle any request.
-* Stateful systems may require sticky sessions (same server every time) or distributed session management (more complexity).
+- Stateless systems scale better because any server can handle any request.
+- Stateful systems may require sticky sessions (same server every time) or distributed session management (more complexity).
 
 🚀 Developer Tip: Know Where the State Lives
 
@@ -490,21 +437,21 @@ Even stateless systems have state it’s just not on the server.
 
 The key is knowing where the state lives:
 
-* In the client? (e.g., browser storage, JWTs)
-* In a shared cache? (e.g., Redis)
-* In the server? (session memory, DB)
+- In the client? (e.g., browser storage, JWTs)
+- In a shared cache? (e.g., Redis)
+- In the server? (session memory, DB)
 
 Once you know where and how state is stored, you can:
 
-* Debug better
-* Design scalable systems
-* Handle failovers and retries more gracefully
+- Debug better
+- Design scalable systems
+- Handle failovers and retries more gracefully
 
-🧠 In Summary 
+🧠 In Summary
 
-* Stateless: No memory of past interactions. Every request is standalone.
-* Stateful: Memory is maintained between interactions. Context is preserved.
-* It’s not about which is better it’s about knowing when and where to use each.
+- Stateless: No memory of past interactions. Every request is standalone.
+- Stateful: Memory is maintained between interactions. Context is preserved.
+- It’s not about which is better it’s about knowing when and where to use each.
 
 💬 Final Thought
 
@@ -527,19 +474,19 @@ Let’s break it down.
 
 🧩 What is Cohesion?
 
-Cohesion is about how focused and related the responsibilities within a single component, module, or class are. 
+Cohesion is about how focused and related the responsibilities within a single component, module, or class are.
 
 Think of it as how well the parts of a unit belong together.
 
 Imagine a restaurant kitchen:
 
-* A highly cohesive kitchen has chefs, tools, and stations all focused on cooking.
-* If that same kitchen also managed accounting, deliveries, and marketing it would be a low-cohesion mess.
+- A highly cohesive kitchen has chefs, tools, and stations all focused on cooking.
+- If that same kitchen also managed accounting, deliveries, and marketing it would be a low-cohesion mess.
 
 In code:
 
-* A high-cohesion module does one job and does it well.
-* A low-cohesion module does too many unrelated things making it confusing and fragile.
+- A high-cohesion module does one job and does it well.
+- A low-cohesion module does too many unrelated things making it confusing and fragile.
 
 ✅ High Cohesion = Clean, focused code.
 ❌ Low Cohesion = Bloated, unclear responsibility.
@@ -552,13 +499,13 @@ The more one module relies on another to function, the tighter the coupling.
 
 Imagine two coworkers:
 
-* If one can’t work without the constant help of the other, they are tightly coupled.
-* If they can each do their job independently but collaborate when needed, they’re loosely coupled.
+- If one can’t work without the constant help of the other, they are tightly coupled.
+- If they can each do their job independently but collaborate when needed, they’re loosely coupled.
 
 In code:
 
-* Tightly coupled code breaks if you change one part.
-* Loosely coupled code can be modified independently and reused easily.
+- Tightly coupled code breaks if you change one part.
+- Loosely coupled code can be modified independently and reused easily.
 
 ✅ Loose Coupling = Flexibility and maintainability
 ❌ Tight Coupling = Fragility and ripple-effect bugs
@@ -569,17 +516,17 @@ Developers often mix the two up because they both deal with how parts of a syste
 
 A common misunderstanding is thinking that improving one automatically improves the other. But you can have:
 
-* High cohesion but tight coupling (each module does one job, but depends too heavily on others)
-* Low cohesion and loose coupling (modules don’t depend on each other, but each does too much)
+- High cohesion but tight coupling (each module does one job, but depends too heavily on others)
+- Low cohesion and loose coupling (modules don’t depend on each other, but each does too much)
 
 The goal is to maximize cohesion and minimize coupling.
 
-🧠 In Summary 
+🧠 In Summary
 
-* Cohesion: How well the responsibilities within a module belong together.
-* Coupling: How tightly one module depends on another.
-* Aim for: High Cohesion + Low Coupling
-* This makes your code modular, maintainable, testable, and scalable.
+- Cohesion: How well the responsibilities within a module belong together.
+- Coupling: How tightly one module depends on another.
+- Aim for: High Cohesion + Low Coupling
+- This makes your code modular, maintainable, testable, and scalable.
 
 ✨ Final Thought
 
@@ -590,11 +537,3 @@ When modules try to do too many things, systems become confusing.
 
 Keep your code focused. Keep it independent.
 Your future self and your teammates will thank you.
-
-
-	
-
-	
-
-	
-

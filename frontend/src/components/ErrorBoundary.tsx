@@ -1,46 +1,47 @@
-import { Component } from "react";
-import type { ErrorInfo, ReactNode } from "react";
+import React from "react";
+import styles from "../../styles/errorboundary.module.css";
 
-interface Props {
-  children: ReactNode;
+interface ErrorBoundaryProps {
+  children: React.ReactNode;
 }
 
-interface State {
+interface ErrorBoundaryState {
   hasError: boolean;
+  error: Error | null;
+  errorInfo: React.ErrorInfo | null;
 }
 
-class ErrorBoundary extends Component<Props, State> {
-  public state: State = {
-    hasError: false,
-  };
-
-  public static getDerivedStateFromError(): State {
-    return { hasError: true };
+class ErrorBoundary extends React.Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.state = { hasError: false, error: null, errorInfo: null };
   }
 
-  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error("Uncaught error:", error, errorInfo);
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error, errorInfo: null };
   }
 
-  public render() {
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    this.setState({ error, errorInfo });
+    // Optionally log error to an external service here
+  }
+
+  render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              Oops, something went wrong!
-            </h2>
-            <button
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-              onClick={() => window.location.reload()}
-            >
-              Refresh Page
-            </button>
-          </div>
+        <div className={styles.errorBoundary}>
+          <h2>Something went wrong.</h2>
+          <details className={styles.errorDetails}>
+            {this.state.error && this.state.error.toString()}
+            <br />
+            {this.state.errorInfo?.componentStack}
+          </details>
         </div>
       );
     }
-
     return this.props.children;
   }
 }
