@@ -46,8 +46,8 @@ const Footer: React.FC = () => {
         </ul>
         <div className={styles.footerContact}>
           <span>
-            <strong>Contact:</strong> info@rjenterprise.com | WhatsApp: +1 234
-            567 890 | Twitter: @rjenterprise | Instagram: @rjenterprise
+            <strong>Contact:</strong> info@rjenterprise.com | WhatsApp: +234 703
+            373 3737 | Twitter: @rjenterprise | Instagram: @rjenterprise
           </span>
         </div>
         <div className={styles.footerSponsors}>
