@@ -3,6 +3,22 @@
   margin: 2rem auto;
   padding: 1rem;
 }
+
+@media (max-width: 600px) {
+  .aboutContainer {
+    margin: 1rem 0.2rem;
+    padding: 0.5rem;
+  }
+  .aboutTitle {
+    font-size: 1.3rem;
+  }
+  .aboutIntro,
+  .aboutSectionTitle,
+  .aboutSectionText,
+  .aboutSectionTextLast {
+    font-size: 0.98rem;
+  }
+}
 .aboutTitle {
   font-size: 2rem;
   margin-bottom: 1rem;
