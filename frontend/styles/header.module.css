@@ -29,16 +29,30 @@
   .centerNav {
     width: 100%;
     justify-content: flex-start;
+    margin-top: 0.2rem;
   }
   .navList {
-    flex-direction: column;
-    gap: 0.5rem;
+    flex-direction: row;
+    gap: 0.3rem;
     width: 100%;
-    align-items: flex-start;
+    overflow-x: visible;
+    align-items: center;
+    white-space: nowrap;
+    padding-bottom: 0.1rem;
+    margin-bottom: 0.1rem;
+    justify-content: flex-start;
+  }
+  .navList li {
+    display: inline-block;
   }
   .logo {
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
+    font-size: 0.31rem; /* one third of 0.93rem */
+    margin-bottom: 0.2rem;
+    margin-top: 0.2rem;
+  }
+  .navLink {
+    font-size: 0.75rem;
+    padding: 0.08rem 0.18rem;
   }
   .hamburger {
     position: absolute;
