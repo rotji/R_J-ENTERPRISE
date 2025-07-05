@@ -16,6 +16,20 @@
   padding: 1.5rem 1rem;
 }
 
+@media (max-width: 600px) {
+  .sidebar {
+    width: 90vw;
+    min-width: 0;
+    padding: 1rem 0.5rem;
+  }
+  .sidebarList {
+    gap: 1rem;
+  }
+  .sidebarLink {
+    font-size: 1rem;
+  }
+}
+
 .sidebarList {
   list-style: none;
   padding: 0;
