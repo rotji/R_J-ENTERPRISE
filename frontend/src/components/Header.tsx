@@ -12,15 +12,21 @@ const navLinks = [
   { name: "Bids", href: "/bids" },
 ];
 
-interface HeaderProps {
-  onOpenSidebar: () => void;
-}
+const Header: React.FC = () => {
+  const [mobileNavOpen, setMobileNavOpen] = React.useState(false);
+  // Close mobile nav on route change (optional, if using react-router)
+  React.useEffect(() => {
+    if (!mobileNavOpen) return;
+    const close = () => setMobileNavOpen(false);
+    window.addEventListener("resize", close);
+    return () => window.removeEventListener("resize", close);
+  }, [mobileNavOpen]);
 
-const Header: React.FC<HeaderProps> = ({ onOpenSidebar }) => {
   return (
     <header className={styles.header}>
       <div className={styles.container}>
         <h1 className={styles.logo}>{APP_NAME}</h1>
+        {/* Desktop Nav */}
         <nav className={styles.centerNav}>
           <ul className={styles.navList}>
             {navLinks.map((link) => (
@@ -32,16 +38,35 @@ const Header: React.FC<HeaderProps> = ({ onOpenSidebar }) => {
             ))}
           </ul>
         </nav>
+        {/* Hamburger for mobile */}
         <button
           className={styles.hamburger}
-          aria-label="Open sidebar menu"
-          onClick={onOpenSidebar}
+          aria-label="Open mobile menu"
+          onClick={() => setMobileNavOpen((v) => !v)}
         >
           <span className={styles.hamburgerBar}></span>
           <span className={styles.hamburgerBar}></span>
           <span className={styles.hamburgerBar}></span>
         </button>
       </div>
+      {/* Mobile Nav */}
+      {mobileNavOpen && (
+        <nav className={styles.mobileNav}>
+          <ul className={styles.mobileNavList}>
+            {navLinks.map((link) => (
+              <li key={link.name}>
+                <a
+                  href={link.href}
+                  className={styles.mobileNavLink}
+                  onClick={() => setMobileNavOpen(false)}
+                >
+                  {link.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
     </header>
   );
 };
