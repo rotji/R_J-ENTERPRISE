@@ -58,6 +58,29 @@
   margin: 0 auto;
 }
 .footerLinks {
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+@media (max-width: 600px) {
+  .footerContent {
+    padding: 0 0.5rem;
+  }
+  .footerLinks {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .footerMainInfo,
+  .footerContact,
+  .footerSponsors,
+  .footerTech {
+    font-size: 0.98rem;
+    text-align: center;
+    margin: 0.2rem 0;
+  }
+}
+.footerLinks {
   display: flex;
   justify-content: center;
   gap: 2rem;
