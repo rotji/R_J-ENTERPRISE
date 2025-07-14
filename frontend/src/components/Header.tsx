@@ -12,7 +12,12 @@ const navLinks = [
   { name: "Bids", href: "/bids" },
 ];
 
-const Header: React.FC = () => {
+// define the prop type
+type HeaderProps = {
+  onOpenSidebar: () => void;
+};
+
+const Header: React.FC<HeaderProps> = ({ onOpenSidebar }) => {
   const [mobileNavOpen, setMobileNavOpen] = React.useState(false);
   // Close mobile nav on route change (optional, if using react-router)
   React.useEffect(() => {
@@ -42,7 +47,10 @@ const Header: React.FC = () => {
         <button
           className={styles.hamburger}
           aria-label="Open mobile menu"
-          onClick={() => setMobileNavOpen((v) => !v)}
+          onClick={() => {
+           setMobileNavOpen((v) => !v);
+               onOpenSidebar();
+            }}
         >
           <span className={styles.hamburgerBar}></span>
           <span className={styles.hamburgerBar}></span>
