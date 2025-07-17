@@ -1,6 +1,6 @@
 .homeContainer {
   max-width: 700px;
-  margin: 4.5rem auto 2rem auto;
+  margin: 8rem auto 2rem auto; /* Increased top margin */
   padding: 1rem;
 }
 

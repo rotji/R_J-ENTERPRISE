@@ -61,17 +61,21 @@ const Header: React.FC<HeaderProps> = ({ onOpenSidebar }) => {
       {mobileNavOpen && (
         <nav className={styles.mobileNav}>
           <ul className={styles.mobileNavList}>
-            {navLinks.map((link) => (
-              <li key={link.name}>
-                <a
-                  href={link.href}
-                  className={styles.mobileNavLink}
-                  onClick={() => setMobileNavOpen(false)}
-                >
-                  {link.name}
-                </a>
-              </li>
-            ))}
+            <li>
+              <a href="/user-dashboard" className={styles.mobileNavLink}>
+                User Dashboard
+              </a>
+            </li>
+            <li>
+              <a href="/vendor-dashboard" className={styles.mobileNavLink}>
+                Vendor Dashboard
+              </a>
+            </li>
+            <li>
+              <a href="/admin-dashboard" className={styles.mobileNavLink}>
+                Admin Dashboard
+              </a>
+            </li>
           </ul>
         </nav>
       )}
