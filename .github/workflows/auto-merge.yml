@@ -27,20 +27,28 @@ jobs:
       - name: Fetch all branches
         run: git fetch --all
 
-      - name: Try merging into main (ultra-loose)
+      - name: Merge current branch into main (Ultra-Loose)
         run: |
           BRANCH_NAME=${{ steps.get_branch.outputs.branch_name }}
-          echo "Trying to merge $BRANCH_NAME into main..."
+          echo "⚙️ Merging $BRANCH_NAME into main..."
 
-          git checkout main || git checkout -b main
-          
-          # Attempt to merge - ignore failures and unrelated history
-          git merge origin/$BRANCH_NAME --allow-unrelated-histories -m "Auto-merged $BRANCH_NAME into main" || {
-            echo "⚠️ Merge failed or branch not found: origin/$BRANCH_NAME. Skipping without failing job."
+          # Fetch the specific branch to ensure it's available locally
+          git fetch origin $BRANCH_NAME:$BRANCH_NAME || {
+            echo "⚠️ Branch '$BRANCH_NAME' not found on remote. Skipping merge."
             exit 0
           }
 
+          # Checkout or create 'main' branch
+          git checkout main || git checkout -b main
+
+          # Try to merge the branch, allow unrelated histories, and prevent job failure
+          git merge $BRANCH_NAME --allow-unrelated-histories -m "🤖 Auto-merged $BRANCH_NAME into main" || {
+            echo "⚠️ Merge failed for branch '$BRANCH_NAME'. Skipping..."
+            exit 0
+          }
+
+          # Attempt to push; ignore failures gracefully
           git push origin main || {
-            echo "⚠️ Push to main failed. Skipping without failing job."
+            echo "⚠️ Push to main failed or nothing to push."
             exit 0
           }
