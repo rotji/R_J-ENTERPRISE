@@ -13,7 +13,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Ensure all branches and history are available
+          fetch-depth: 0  # Fetch all history and branches
 
       - name: Set up Git identity
         run: |
@@ -25,23 +25,22 @@ jobs:
         run: echo "branch_name=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
 
       - name: Fetch all branches
-        run: git fetch origin
+        run: git fetch --all
 
-      - name: Check if branch exists remotely
-        id: check_branch
+      - name: Try merging into main (ultra-loose)
         run: |
           BRANCH_NAME=${{ steps.get_branch.outputs.branch_name }}
-          if git show-ref --verify --quiet refs/remotes/origin/$BRANCH_NAME; then
-            echo "branch_exists=true" >> $GITHUB_OUTPUT
-          else
-            echo "branch_exists=false" >> $GITHUB_OUTPUT
-          fi
+          echo "Trying to merge $BRANCH_NAME into main..."
 
-      - name: Merge branch into main
-        if: steps.check_branch.outputs.branch_exists == 'true'
-        run: |
-          BRANCH_NAME=${{ steps.get_branch.outputs.branch_name }}
-          echo "Merging $BRANCH_NAME into main..."
-          git checkout main
-          git merge origin/$BRANCH_NAME --allow-unrelated-histories -m "Auto-merged $BRANCH_NAME into main"
-          git push origin main
+          git checkout main || git checkout -b main
+          
+          # Attempt to merge - ignore failures and unrelated history
+          git merge origin/$BRANCH_NAME --allow-unrelated-histories -m "Auto-merged $BRANCH_NAME into main" || {
+            echo "⚠️ Merge failed or branch not found: origin/$BRANCH_NAME. Skipping without failing job."
+            exit 0
+          }
+
+          git push origin main || {
+            echo "⚠️ Push to main failed. Skipping without failing job."
+            exit 0
+          }
