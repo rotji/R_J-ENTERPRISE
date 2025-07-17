@@ -3,7 +3,7 @@ name: Auto Merge Any Branch to Main
 on:
   push:
     branches-ignore:
-      - main  # Don't trigger when pushing to main itself
+      - main  # Prevent triggering when pushing directly to main
 
 jobs:
   merge:
@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Ensures full history is fetched for all branches
 
       - name: Set up Git identity
         run: |
@@ -23,12 +25,26 @@ jobs:
         run: echo "branch_name=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
 
       - name: Fetch all branches
-        run: git fetch origin
+        run: git fetch --all  # Fetch every remote branch
+
+      - name: Check if branch exists remotely
+        id: check_branch
+        run: |
+          BRANCH_NAME=${{ steps.get_branch.outputs.branch_name }}
+          if git show-ref --verify --quiet refs/remotes/origin/$BRANCH_NAME; then
+            echo "branch_exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "branch_exists=false" >> $GITHUB_OUTPUT
 
       - name: Merge current branch into main
+        if: steps.check_branch.outputs.branch_exists == 'true'
         run: |
           BRANCH_NAME=${{ steps.get_branch.outputs.branch_name }}
           echo "Merging $BRANCH_NAME into main..."
           git checkout main
           git merge origin/$BRANCH_NAME --allow-unrelated-histories -m "Auto-merged $BRANCH_NAME into main"
           git push origin main
+
+      - name: Skip merge if branch does not exist
+        if: steps.check_branch.outputs.branch_exists == 'false'
+        run: echo "Branch does not exist on remote. Skipping merge."
