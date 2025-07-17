@@ -11,29 +11,6 @@ const Footer: React.FC = () => {
         </div>
         <ul className={styles.footerLinks}>
           <li>
-            <a href="/about" className={styles.footerLink}>
-              About
-            </a>
-          </li>
-          <li>
-            <a
-              href="/docs/developerschecklist.md"
-              className={styles.footerLink}
-            >
-              Developer Checklist
-            </a>
-          </li>
-          <li>
-            <a href="/docs/logics.md" className={styles.footerLink}>
-              Project Logic
-            </a>
-          </li>
-          <li>
-            <a href="/docs/readme.md" className={styles.footerLink}>
-              Docs
-            </a>
-          </li>
-          <li>
             <a
               href="https://github.com/your-org/your-repo"
               className={styles.footerLink}
