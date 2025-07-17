@@ -25,6 +25,7 @@
     flex-direction: column;
     align-items: flex-start;
     padding: 0.5rem 0.5rem;
+    min-height: 70px; /* Increased height for mobile */
   }
   .centerNav {
     width: 100%;
@@ -33,7 +34,7 @@
   }
   .navList {
     flex-direction: row;
-    gap: 0.3rem;
+    gap: 0.1rem; /* Reduced gap for mobile */
     width: 100%;
     overflow-x: visible;
     align-items: center;
