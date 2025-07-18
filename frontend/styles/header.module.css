@@ -34,9 +34,9 @@
   }
   .navList {
     flex-direction: row;
-    gap: 0.1rem; /* Reduced gap for mobile */
+    gap: 0.05rem; /* Further reduced gap for mobile */
     width: 100%;
-    overflow-x: visible;
+    overflow-x: auto; /* Allow horizontal scrolling if needed */
     align-items: center;
     white-space: nowrap;
     padding-bottom: 0.1rem;
@@ -52,8 +52,8 @@
     margin-top: 0.2rem;
   }
   .navLink {
-    font-size: 0.75rem;
-    padding: 0.08rem 0.18rem;
+    font-size: 0.7rem; /* Reduced font size */
+    padding: 0.05rem 0.1rem; /* Reduced padding */
   }
   .hamburger {
     position: absolute;
