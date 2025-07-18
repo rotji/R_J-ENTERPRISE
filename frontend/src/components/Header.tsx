@@ -6,7 +6,8 @@ const APP_NAME = "R_J ENTERPRISE";
 const navLinks = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
-  { name: "Register/Login", href: "/auth" },
+  { name: "Register", href: "/register" },
+  { name: "Login", href: "/login" },
   { name: "Create Pool", href: "/create-pool" },
   { name: "Pools", href: "/pools" },
   { name: "Bids", href: "/bids" },
