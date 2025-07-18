@@ -34,14 +34,14 @@
   }
   .navList {
     flex-direction: row;
-    gap: 0.05rem; /* Further reduced gap for mobile */
+    gap: 0.2rem; /* Adjusted gap for mobile */
     width: 100%;
-    overflow-x: auto; /* Allow horizontal scrolling if needed */
+    overflow-x: hidden; /* Hide horizontal scrollbar */
     align-items: center;
     white-space: nowrap;
     padding-bottom: 0.1rem;
     margin-bottom: 0.1rem;
-    justify-content: flex-start;
+    justify-content: space-between; /* Distribute items evenly */
   }
   .navList li {
     display: inline-block;
