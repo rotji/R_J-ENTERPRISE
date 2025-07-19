@@ -27,12 +27,21 @@ if (process.env.NODE_ENV === "development") {
   logger.info("✅ Morgan HTTP request logging enabled (dev mode)");
 }
 
+// Import routes
+import authRoutes from "./routes/authRoutes";
+
 // Sample route
 app.get("/", (req, res) => {
   logger.info("📥 GET / route accessed");
   res.send("R_J ENTERPRISE backend running...");
 });
 
+// Use routes
+app.use("/api/auth", authRoutes);
+
+// Error handler middleware
+import { errorHandler } from "./middleware/errorMiddleware";
+app.use(errorHandler);
 
 // Define port
 const PORT = process.env.PORT || 5000;
