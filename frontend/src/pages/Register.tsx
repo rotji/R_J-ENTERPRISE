@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from '../../styles/register.module.css';
+import apiBaseUrl from '../utils/apiBaseUrl'; // <-- Added import
 
 const Register: React.FC = () => {
   const [form, setForm] = useState({
@@ -29,7 +30,7 @@ const Register: React.FC = () => {
     setSuccess('');
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/auth/register`, {
+      const res = await fetch(`${apiBaseUrl}/api/auth/register`, { // <-- Use apiBaseUrl here
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -89,4 +90,3 @@ const Register: React.FC = () => {
 };
 
 export default Register;
-
