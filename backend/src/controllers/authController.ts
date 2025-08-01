@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import User from '../database/models/User';
+import bcrypt from 'bcryptjs';
 
 export const registerUser = async (req: Request, res: Response, next: NextFunction) => {
   const { username, email, password } = req.body;
@@ -11,10 +12,13 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
     throw new Error('User already exists');
   }
 
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
+
   const user = await User.create({
     username,
     email,
-    password,
+    password: hashedPassword,
   });
 
   if (user) {

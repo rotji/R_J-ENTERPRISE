@@ -54,3 +54,18 @@
     background-color: #0056b3;
   }
   
+    @media (max-width: 600px) {
+      .container {
+        align-items: flex-start;
+        height: auto;
+        min-height: 100vh;
+        padding: 1rem 0;
+      }
+  
+      .form {
+        padding: 1rem;
+        border-radius: 0;
+        box-shadow: none;
+        max-width: 98vw;
+      }
+    }
