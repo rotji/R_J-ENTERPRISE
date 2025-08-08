@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from '../../styles/register.module.css';
-import apiBaseUrl from '../utils/apiBaseUrl'; // <-- Added import
+import styles from '../../styles/login.module.css';
+import apiBaseUrl from '../utils/apiBaseUrl';
 
-const Register: React.FC = () => {
+const Login: React.FC = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({
-    username: '',
     email: '',
     password: '',
-    confirmPassword: '',
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -23,29 +21,24 @@ const Register: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (form.password !== form.confirmPassword) {
-      setError("Passwords do not match");
-      return;
-    }
     setLoading(true);
     setError('');
     setSuccess('');
 
     try {
-      const res = await fetch(`${apiBaseUrl}/api/auth/register`, { // <-- Use apiBaseUrl here
+      const res = await fetch(`${apiBaseUrl}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          username: form.username,
           email: form.email,
           password: form.password,
         }),
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.message || 'Registration failed');
+        setError(data.message || 'Login failed');
       } else {
-        setSuccess('Registration successful! Redirecting...');
+        setSuccess('Login successful! Redirecting...');
         setTimeout(() => navigate('/'), 2000); // Redirect after 2 seconds
       }
     } catch (_err) {
@@ -57,13 +50,9 @@ const Register: React.FC = () => {
   return (
     <div className={styles.container}>
       <form className={styles.form} onSubmit={handleSubmit}>
-        <h2>Register</h2>
+        <h2>Login</h2>
         {error && <div style={{ color: 'red', marginBottom: 10 }}>{error}</div>}
         {success && <div style={{ color: 'green', marginBottom: 10 }}>{success}</div>}
-        <div className={styles.inputGroup}>
-          <label htmlFor="username">Username</label>
-          <input type="text" id="username" name="username" required value={form.username} onChange={handleChange} />
-        </div>
         <div className={styles.inputGroup}>
           <label htmlFor="email">Email</label>
           <input type="email" id="email" name="email" required value={form.email} onChange={handleChange} />
@@ -72,23 +61,12 @@ const Register: React.FC = () => {
           <label htmlFor="password">Password</label>
           <input type="password" id="password" name="password" required value={form.password} onChange={handleChange} />
         </div>
-        <div className={styles.inputGroup}>
-          <label htmlFor="confirmPassword">Confirm Password</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            required
-            value={form.confirmPassword}
-            onChange={handleChange}
-          />
-        </div>
         <button type="submit" className={styles.button} disabled={loading}>
-          {loading ? 'Registering...' : 'Register'}
+          {loading ? 'Logging in...' : 'Login'}
         </button>
       </form>
     </div>
   );
 };
 
-export default Register;
+export default Login;

@@ -7,6 +7,7 @@ import Sidebar from "./components/Sidebar";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Register from "./pages/Register";
+import Login from "./pages/Login";
 import appStyles from "../styles/app.module.css";
 
 const App: React.FC = () => {
@@ -21,6 +22,7 @@ const App: React.FC = () => {
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login />} />
             </Routes>
             <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
           </main>
