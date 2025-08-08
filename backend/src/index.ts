@@ -29,6 +29,7 @@ if (process.env.NODE_ENV === "development") {
 
 // Import routes
 import authRoutes from "./routes/authRoutes";
+import poolRoutes from "./routes/poolRoutes";
 
 // Sample route
 app.get("/", (req, res) => {
@@ -38,6 +39,7 @@ app.get("/", (req, res) => {
 
 // Use routes
 app.use("/api/auth", authRoutes);
+app.use("/api/pools", poolRoutes);
 
 // Error handler middleware
 import { errorHandler } from "./middleware/errorMiddleware";
