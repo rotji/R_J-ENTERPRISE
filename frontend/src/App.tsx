@@ -9,6 +9,7 @@ import About from "./pages/About";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import CreatePoolPage from "./pages/CreatePool";
+import AllPoolsPage from "./pages/AllPools";
 import appStyles from "../styles/app.module.css";
 
 const App: React.FC = () => {
@@ -25,6 +26,7 @@ const App: React.FC = () => {
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
               <Route path="/create-pool" element={<CreatePoolPage />} />
+              <Route path="/pools" element={<AllPoolsPage />} />
             </Routes>
             <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
           </main>
