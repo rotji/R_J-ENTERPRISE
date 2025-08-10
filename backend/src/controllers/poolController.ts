@@ -27,4 +27,38 @@ const createPool = asyncHandler(async (req: IRequestWithUser, res: Response) => 
   res.status(201).json(createdPool);
 });
 
-export { createPool };
+// @desc    Get all pools
+// @route   GET /api/pools
+// @access  Public
+const getPools = asyncHandler(async (req: IRequestWithUser, res: Response) => {
+  const pools = await Pool.find({}).sort({ createdAt: -1 });
+  res.json(pools);
+});
+
+// @desc    Join a pool
+// @route   POST /api/pools/:id/join
+// @access  Private
+const joinPool = asyncHandler(async (req: IRequestWithUser, res: Response) => {
+  const pool = await Pool.findById(req.params.id);
+
+  if (!pool) {
+    res.status(404);
+    throw new Error('Pool not found');
+  }
+
+  const alreadyMember = pool.members.find(
+    (memberId) => memberId.toString() === req.user._id.toString()
+  );
+
+  if (alreadyMember) {
+    res.status(400);
+    throw new Error('You are already a member of this pool');
+  }
+
+  pool.members.push(req.user._id);
+  await pool.save();
+
+  res.json(pool);
+});
+
+export { createPool, getPools, joinPool };
