@@ -31,7 +31,16 @@ const createPool = asyncHandler(async (req: IRequestWithUser, res: Response) => 
 // @route   GET /api/pools
 // @access  Public
 const getPools = asyncHandler(async (req: IRequestWithUser, res: Response) => {
-  const pools = await Pool.find({}).sort({ createdAt: -1 });
+  const keyword = req.query.search
+    ? {
+        $text: {
+          $search: req.query.search as string,
+          $caseSensitive: false,
+        },
+      }
+    : {};
+
+  const pools = await Pool.find({ ...keyword }).sort({ createdAt: -1 });
   res.json(pools);
 });
 
