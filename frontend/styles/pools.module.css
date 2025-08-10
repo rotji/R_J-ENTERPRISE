@@ -12,6 +12,28 @@
   color: #1e293b;
 }
 
+.searchContainer {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.searchInput {
+  width: 100%;
+  max-width: 500px;
+  padding: 0.75rem 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
 .poolsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));

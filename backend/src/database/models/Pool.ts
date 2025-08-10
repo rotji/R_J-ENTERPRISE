@@ -53,6 +53,8 @@ const poolSchema: Schema = new Schema({
   timestamps: true,
 });
 
+poolSchema.index({ title: 'text', description: 'text' });
+
 const Pool = mongoose.model<IPool>('Pool', poolSchema);
 
 export default Pool;

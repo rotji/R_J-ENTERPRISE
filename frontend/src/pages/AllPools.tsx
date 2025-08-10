@@ -8,21 +8,31 @@ const AllPoolsPage = () => {
   const [pools, setPools] = useState<Pool[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>('');
 
   useEffect(() => {
-    const fetchPools = async () => {
-      try {
-        const data = await apiCall('/api/pools', 'GET');
-        setPools(data);
-      } catch (err: any) {
-        setError(err.message || 'Failed to fetch pools.');
-      } finally {
-        setLoading(false);
-      }
-    };
+    setLoading(true);
+    const debounceTimer = setTimeout(() => {
+      const fetchPools = async () => {
+        try {
+          const endpoint = searchTerm ? `/api/pools?search=${searchTerm}` : '/api/pools';
+          const data = await apiCall(endpoint, 'GET');
+          setPools(data);
+          setError(null);
+        } catch (err: any) {
+          setError(err.message || 'Failed to fetch pools.');
+          setPools([]); // Clear pools on error
+        } finally {
+          setLoading(false);
+        }
+      };
 
-    fetchPools();
-  }, []);
+      fetchPools();
+    }, 300); // 300ms debounce delay
+
+    // Cleanup function to clear the timeout if the user types again
+    return () => clearTimeout(debounceTimer);
+  }, [searchTerm]); // Re-run effect when searchTerm changes
 
   let content;
 
@@ -31,7 +41,7 @@ const AllPoolsPage = () => {
   } else if (error) {
     content = <p className={styles.error}>{error}</p>;
   } else if (pools.length === 0) {
-    content = <p>No pools have been created yet.</p>;
+    content = <p>No pools found.</p>;
   } else {
     content = (
       <div className={styles.poolsGrid}>
@@ -45,6 +55,15 @@ const AllPoolsPage = () => {
   return (
     <div className={styles.pageContainer}>
       <h1 className={styles.pageTitle}>All Available Pools</h1>
+      <div className={styles.searchContainer}>
+        <input
+          type="text"
+          placeholder="Search for pools (e.g., rice, beans)..."
+          className={styles.searchInput}
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
       {content}
     </div>
   );
