@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { apiCall } from '../utils/api';
 import PoolCard from '../components/PoolCard';
-import { Pool } from '../components/PoolCard';
+import type { Pool } from '../components/PoolCard';
 import styles from '../../styles/pools.module.css';
 
 const AllPoolsPage = () => {
