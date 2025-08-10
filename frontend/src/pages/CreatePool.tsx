@@ -1,4 +1,3 @@
-import React from 'react';
 import CreatePoolForm from '../components/CreatePoolForm';
 
 const CreatePoolPage = () => {
