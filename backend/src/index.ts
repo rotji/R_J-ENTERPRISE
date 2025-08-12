@@ -10,6 +10,12 @@ import logger from "./utils/logger"; // Winston logger instance
 // Load environment variables BEFORE using them
 dotenv.config();
 
+// Validate that all required environment variables are set
+if (!process.env.JWT_SECRET) {
+  logger.error("FATAL ERROR: JWT_SECRET is not defined.");
+  process.exit(1); // Exit the process with a failure code
+}
+
 // Connect to MongoDB
 connectDB();
 
