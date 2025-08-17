@@ -16,9 +16,6 @@ if (!process.env.JWT_SECRET) {
   process.exit(1); // Exit the process with a failure code
 }
 
-// Connect to MongoDB
-connectDB();
-
 // Create Express app instance
 const app = express();
 
@@ -54,7 +51,21 @@ app.use(errorHandler);
 // Define port
 const PORT = process.env.PORT || 5000;
 
-// Start server
-app.listen(PORT, () => {
-  logger.info(`🚀 Server running on port ${PORT} in ${process.env.NODE_ENV} mode`);
-});
+// --- Start Server ---
+const startServer = async () => {
+  try {
+    // Connect to MongoDB BEFORE starting the server
+    await connectDB();
+
+    // Start server
+    app.listen(PORT, () => {
+      logger.info(`🚀 Server running on port ${PORT} in ${process.env.NODE_ENV} mode`);
+    });
+  } catch (error) {
+    logger.error("❌ Failed to connect to MongoDB", error);
+    process.exit(1);
+  }
+};
+
+// Run the server
+startServer();
