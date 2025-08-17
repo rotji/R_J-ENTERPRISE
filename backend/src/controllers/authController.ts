@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from 'express';
 import User from '../database/models/User';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-
 const generateToken = (id: string) => {
   return jwt.sign({ id }, process.env.JWT_SECRET!, {
     expiresIn: '30d',

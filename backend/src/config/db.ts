@@ -1,13 +1,10 @@
 import mongoose from "mongoose";
+import logger from "../utils/logger";
 
 const connectDB = async () => {
-  try {
-    const conn = await mongoose.connect(process.env.MONGO_URI!);
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
-  } catch (error) {
-    console.error("DB connection failed", error);
-    process.exit(1);
-  }
+  // No try/catch needed here, the promise will be handled by the caller
+  const conn = await mongoose.connect(process.env.MONGO_URI!);
+  logger.info(`🔌 MongoDB Connected: ${conn.connection.host}`);
 };
 
 export default connectDB;
