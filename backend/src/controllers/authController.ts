@@ -43,8 +43,7 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
   const { email, password } = req.body;
 
   try {
-    const user = await User.findOne({ email });
-
+    const user = await User.findOne({ email: email.trim() });
     if (user && (await bcrypt.compare(password, user.password))) {
       res.json({
         _id: user._id,
