@@ -744,3 +744,5 @@ When modules try to do too many things, systems become confusing.
 
 Keep your code focused. Keep it independent.
 Your future self and your teammates will thank you.
+
+debugging tips: during debugging in programming dont just pay attention to code logic first check environment and configuration in .env second tooling which means is the application loading new changes or is using old code which is cashe problem, then third you can consider and check codes logic
