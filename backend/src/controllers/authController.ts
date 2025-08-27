@@ -40,6 +40,8 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
 };
 
 export const loginUser = async (req: Request, res: Response, next: NextFunction) => {
+  console.log("--- LOGIN ATTEMPT RECEIVED ---");
+  console.log("Request Body:", req.body);
   const { email, password } = req.body;
 
   try {
