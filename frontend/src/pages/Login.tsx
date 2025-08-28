@@ -38,6 +38,7 @@ const Login: React.FC = () => {
       if (!res.ok) {
         setError(data.message || 'Login failed');
       } else {
+        localStorage.setItem('userInfo', JSON.stringify(data));
         setSuccess('Login successful! Redirecting...');
         setTimeout(() => navigate('/'), 2000); // Redirect after 2 seconds
       }
