@@ -1,78 +1,74 @@
-import { Request, Response, NextFunction } from 'express';
-import User from '../database/models/User';
-import bcrypt from 'bcryptjs';
+import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-const generateToken = (id: string) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET!, {
-    expiresIn: '30d',
-  });
-};
+import bcrypt from 'bcryptjs';
+import User from '../database/models/User';
 
-export const registerUser = async (req: Request, res: Response, next: NextFunction) => {
-  const { username, email, password } = req.body;
-   console.log('📩 Register attempt:', { username, email, rawPassword: password });
-
-  const userExists = await User.findOne({ email });
-  console.log('🔍 Checking if user exists:', userExists);
-
-  if (userExists) {
-    console.log('⚠️ User already exists:', email);
-    res.status(400);
-    throw new Error('User already exists');
-  }
-
-  const user = await User.create({ username, email, password: password, // Use the original password here
-  
-  });
-  console.log('✅ New user created. Stored user object:', user);
-
-  if (user) {
-    res.status(201).json({
-      _id: user._id,
-      username: user.username,
-      email: user.email,
-    });
-  } else {
-    res.status(400);
-    throw new Error('Invalid user data');
-  }
-};
-
-export const loginUser = async (req: Request, res: Response, next: NextFunction) => {
-
-  const { email, password } = req.body;
-  console.log('🔑 Login attempt:', { email, rawPassword: password });
+// @desc    Register a new user
+// @route   POST /api/auth/register
+// @access  Public
+export const registerUser = async (req: Request, res: Response) => {
+  const { name, email, password } = req.body;
 
   try {
-    const user = await User.findOne({ email: email.trim() });
-    console.log('📂 User found in DB:', user);
+    const existingUser = await User.findOne({ where: { email } });
 
-    if (user) {
-  console.log("🔐 Attempting login for:", email);
-  console.log("👉 Raw password entered:", password);
-  console.log("👉 Hashed password in DB:", user.password);
+    if (existingUser) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
 
-  const isMatch = await bcrypt.compare(password, user.password);
-  console.log("✅ Password match result:", isMatch);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-  if (isMatch) {
-    res.json({
-      _id: user._id,
-      username: user.username,
-      email: user.email,
-      token: generateToken(user._id.toString()),
+    const user = await User.create({
+      name,
+      email,
+      password: hashedPassword,
     });
-  } else {
-    res.status(401);
-    throw new Error('Invalid email or password');
-  }
-} else {
-  res.status(401);
-  throw new Error('Invalid email or password');
-}
 
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET as string, {
+      expiresIn: '30d',
+    });
+
+    res.status(201).json({
+      id: user.id,
+
+      email: user.email,
+      token,
+    });
   } catch (error) {
-    console.error('💥 Login error:', error);
-    next(error);
+    res.status(500).json({ message: 'Server error', error });
+  }
+};
+
+// @desc    Login user
+// @route   POST /api/auth/login
+// @access  Public
+export const loginUser = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ where: { email } });
+
+    if (!user) {
+      return res.status(400).json({ message: 'Invalid credentials' });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Invalid credentials' });
+    }
+
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET as string, {
+      expiresIn: '30d',
+    });
+
+    res.json({
+      id: user.id,
+      email: user.email,
+      token,
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
   }
 };
