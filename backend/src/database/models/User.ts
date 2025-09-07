@@ -6,6 +6,7 @@ export interface IUser extends Document {
   username: string;
   email: string;
   password: string;
+  role: 'user' | 'admin' | 'supplier';
   matchPassword(enteredPassword: string): Promise<boolean>;
 }
 
@@ -30,6 +31,11 @@ const userSchema = new mongoose.Schema<IUser>(
       type: String,
       required: [true, "Password is required"],
       minlength: [6, "Password must be at least 6 characters long"],
+    },
+    role: {
+      type: String,
+      enum: ['user', 'admin', 'supplier'],
+      default: 'user',
     },
   },
   {

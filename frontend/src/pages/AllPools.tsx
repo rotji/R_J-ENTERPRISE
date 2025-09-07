@@ -19,8 +19,12 @@ const AllPoolsPage = () => {
           const data = await apiCall(endpoint, 'GET');
           setPools(data);
           setError(null);
-        } catch (err: any) {
-          setError(err.message || 'Failed to fetch pools.');
+        } catch (err: unknown) {
+          if (err instanceof Error) {
+            setError(err.message);
+          } else {
+            setError('An unknown error occurred');
+          }
           setPools([]); // Clear pools on error
         } finally {
           setLoading(false);

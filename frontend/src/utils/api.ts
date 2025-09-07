@@ -1,7 +1,7 @@
 import apiBaseUrl from './apiBaseUrl';
 
 // A generic API call function
-export const apiCall = async (endpoint: string, method: string, body: any = null, token: string | null = null) => {
+export const apiCall = async <T>(endpoint: string, method: string, body: unknown = null, token: string | null = null): Promise<T> => {
   const options: RequestInit = {
     method,
     headers: {
@@ -14,7 +14,7 @@ export const apiCall = async (endpoint: string, method: string, body: any = null
   }
 
   if (token) {
-    (options.headers as any)['Authorization'] = `Bearer ${token}`;
+    (options.headers as Record<string, string>)['Authorization'] = `Bearer ${token}`;
   }
 
   const response = await fetch(`${apiBaseUrl}${endpoint}`, options);
@@ -27,8 +27,20 @@ export const apiCall = async (endpoint: string, method: string, body: any = null
   // Handle cases where the response might be empty
   const responseText = await response.text();
   if (!responseText) {
-    return null;
+    return null as T;
   }
 
-  return JSON.parse(responseText);
+  return JSON.parse(responseText) as T;
+};
+
+export const getUserDashboardData = (token: string) => {
+    return apiCall<any>('/api/dashboards/user', 'GET', null, token);
+};
+
+export const getAdminDashboardData = (token: string) => {
+    return apiCall<any>('/api/dashboards/admin', 'GET', null, token);
+};
+
+export const getSupplierDashboardData = (token: string) => {
+    return apiCall<any>('/api/dashboards/supplier', 'GET', null, token);
 };

@@ -50,8 +50,12 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
 
       setMemberCount(updatedPool.members.length);
       setIsJoined(true);
-    } catch (err: any) {
-      setError(err.message || 'Failed to join the pool.');
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unknown error occurred');
+      }
     } finally {
       setLoading(false);
     }

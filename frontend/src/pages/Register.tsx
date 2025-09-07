@@ -48,7 +48,7 @@ const Register: React.FC = () => {
         setSuccess('Registration successful! Redirecting...');
         setTimeout(() => navigate('/'), 2000); // Redirect after 2 seconds
       }
-    } catch (_err) {
+    } catch (err) {
       setError('Network error. Please try again.');
     }
     setLoading(false);
