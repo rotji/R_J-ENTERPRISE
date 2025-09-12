@@ -19,15 +19,6 @@ type HeaderProps = {
 };
 
 const Header: React.FC<HeaderProps> = ({ onOpenSidebar }) => {
-  const [mobileNavOpen, setMobileNavOpen] = React.useState(false);
-  // Close mobile nav on route change (optional, if using react-router)
-  React.useEffect(() => {
-    if (!mobileNavOpen) return;
-    const close = () => setMobileNavOpen(false);
-    window.addEventListener("resize", close);
-    return () => window.removeEventListener("resize", close);
-  }, [mobileNavOpen]);
-
   return (
     <header className={styles.header}>
       <div className={styles.container}>
@@ -48,38 +39,13 @@ const Header: React.FC<HeaderProps> = ({ onOpenSidebar }) => {
         <button
           className={styles.hamburger}
           aria-label="Open mobile menu"
-          onClick={() => {
-           setMobileNavOpen((v) => !v);
-               onOpenSidebar();
-            }}
+          onClick={onOpenSidebar}
         >
           <span className={styles.hamburgerBar}></span>
           <span className={styles.hamburgerBar}></span>
           <span className={styles.hamburgerBar}></span>
         </button>
       </div>
-      {/* Mobile Nav */}
-      {mobileNavOpen && (
-        <nav className={styles.mobileNav}>
-          <ul className={styles.mobileNavList}>
-            <li>
-              <a href="/user-dashboard" className={styles.mobileNavLink}>
-                User Dashboard
-              </a>
-            </li>
-            <li>
-              <a href="/vendor-dashboard" className={styles.mobileNavLink}>
-                Vendor Dashboard
-              </a>
-            </li>
-            <li>
-              <a href="/admin-dashboard" className={styles.mobileNavLink}>
-                Admin Dashboard
-              </a>
-            </li>
-          </ul>
-        </nav>
-      )}
     </header>
   );
 };

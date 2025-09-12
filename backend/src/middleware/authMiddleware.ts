@@ -4,9 +4,20 @@ import asyncHandler from '../utils/asyncHandler';
 import User from '../database/models/User';
 import { Document, Types } from 'mongoose';
 
+import { IUser } from '../database/models/User';
+
 // Extend Express Request interface to include user
+export interface IUserPayload {
+  id: string;
+  role: string;
+}
+
 export interface IRequestWithUser extends Request {
-  user?: any;
+  user?: (IUser & Document) | null;
+}
+
+interface IDecodedToken extends jwt.JwtPayload {
+  id: string;
 }
 
 const protect = asyncHandler(async (req: IRequestWithUser, res: Response, next: NextFunction) => {
@@ -18,7 +29,7 @@ const protect = asyncHandler(async (req: IRequestWithUser, res: Response, next: 
       token = req.headers.authorization.split(' ')[1];
 
       // Verify token
-      const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET!) as IDecodedToken;
 
       // Get user from the token
       req.user = await User.findById(decoded.id).select('-password');

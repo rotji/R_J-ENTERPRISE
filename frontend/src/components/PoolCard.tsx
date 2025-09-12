@@ -46,12 +46,16 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
         throw new Error('You must be logged in to join a pool.');
       }
 
-      const updatedPool = await apiCall(`/api/pools/${pool._id}/join`, 'POST', {}, token);
+      const updatedPool = await apiCall<Pool>(`/api/pools/${pool._id}/join`, 'POST', {}, token);
 
       setMemberCount(updatedPool.members.length);
       setIsJoined(true);
-    } catch (err: any) {
-      setError(err.message || 'Failed to join the pool.');
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unknown error occurred');
+      }
     } finally {
       setLoading(false);
     }

@@ -43,8 +43,12 @@ const CreatePoolForm = () => {
       setTimeout(() => {
         navigate('/');
       }, 2000);
-    } catch (err: any) {
-      setError(err.message || 'An error occurred. Please try again.');
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unknown error occurred');
+      }
     } finally {
       setLoading(false);
     }

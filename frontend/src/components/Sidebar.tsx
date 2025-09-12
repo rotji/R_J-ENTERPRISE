@@ -11,7 +11,7 @@ const sidebarLinks = [
   { name: "Login", href: "/login" },
   { name: "User Dashboard", href: "/user-dashboard" },
   { name: "Admin Dashboard", href: "/admin-dashboard" },
-  { name: "Vendor Dashboard", href: "/vendor-dashboard" },
+  { name: "Supplier Dashboard", href: "/supplier-dashboard" },
 ];
 
 const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {

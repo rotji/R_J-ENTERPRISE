@@ -42,7 +42,7 @@ const Login: React.FC = () => {
         setSuccess('Login successful! Redirecting...');
         setTimeout(() => navigate('/'), 2000); // Redirect after 2 seconds
       }
-    } catch (_err) {
+    } catch (err) {
       setError('Network error. Please try again.');
     }
     setLoading(false);
