@@ -32,7 +32,7 @@ const App: React.FC = () => {
               <Route path="/pools" element={<AllPoolsPage />} />
               <Route path="/user-dashboard" element={<UserDashboard />} />
               <Route path="/admin-dashboard" element={<AdminDashboard />} />
-              <Route path="/vendor-dashboard" element={<SupplierDashboard />} />
+              <Route path="/supplier-dashboard" element={<SupplierDashboard />} />
             </Routes>
             <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
           </main>

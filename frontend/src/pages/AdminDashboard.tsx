@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { getAdminDashboardData } from '../utils/api';
 import styles from '../../styles/dashboard.module.css';
 
-interface IStats {
-  userCount?: number;
-  poolCount?: number;
-  bidCount?: number;
-  totalRevenue?: number;
+interface IAdminData {
+  users?: { daily: number; weekly: number; monthly: number; };
+  revenue?: { daily: number; weekly: number; monthly: number; };
+  pools?: { daily: number; weekly: number; monthly: number; };
+  allBids?: any[];
 }
 
 const AdminDashboard: React.FC = () => {
-  const [stats, setStats] = useState<IStats>({});
+  const [data, setData] = useState<IAdminData>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -23,13 +23,8 @@ const AdminDashboard: React.FC = () => {
           setLoading(false);
           return;
         }
-        const data = await getAdminDashboardData(token);
-        setStats({
-          userCount: data.userCount,
-          poolCount: data.poolCount,
-          bidCount: data.bidCount,
-          totalRevenue: data.totalRevenue,
-        });
+        const response = await getAdminDashboardData(token);
+        setData(response);
       } catch (err: unknown) {
         if (err instanceof Error) {
           setError(err.message);
@@ -55,24 +50,25 @@ const AdminDashboard: React.FC = () => {
         <h2 className={styles.sectionTitle}>Platform Metrics</h2>
         <div className={styles.card}>
           <h3>Users</h3>
-          <p>Total Users: {stats.userCount}</p>
-        </div>
-        <div className={styles.card}>
-          <h3>Pools</h3>
-          <p>Total Pools: {stats.poolCount}</p>
-        </div>
-        <div className={styles.card}>
-          <h3>Bids</h3>
-          <p>Total Bids: {stats.bidCount}</p>
+          <p>Daily Active: {data.users?.daily}</p>
+          <p>Weekly Active: {data.users?.weekly}</p>
+          <p>Monthly Active: {data.users?.monthly}</p>
         </div>
         <div className={styles.card}>
           <h3>Revenue</h3>
-          <p>Total Revenue: ${stats.totalRevenue}</p>
+          <p>Daily: ${data.revenue?.daily}</p>
+          <p>Weekly: ${data.revenue?.weekly}</p>
+          <p>Monthly: ${data.revenue?.monthly}</p>
+        </div>
+        <div className={styles.card}>
+          <h3>Pools</h3>
+          <p>Daily Created: {data.pools?.daily}</p>
+          <p>Weekly Created: {data.pools?.weekly}</p>
+          <p>Monthly Created: {data.pools?.monthly}</p>
         </div>
       </section>
 
-      {/* The backend doesn't send all bids, so this section is commented out for now */}
-      {/* <section className={styles.section}>
+      <section className={styles.section}>
         <h2 className={styles.sectionTitle}>All Bids</h2>
         <table className={styles.table}>
           <thead>
@@ -84,10 +80,10 @@ const AdminDashboard: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {bids.length > 0 ? bids.map((bid: any) => (
+            {data.allBids && data.allBids.length > 0 ? data.allBids.map((bid: any) => (
               <tr key={bid._id}>
-                <td>{bid.pool.title}</td>
-                <td>{bid.supplier.username}</td>
+                <td>{bid.pool?.title}</td>
+                <td>{bid.supplier?.username}</td>
                 <td>${bid.amount}</td>
                 <td>{bid.status}</td>
               </tr>
@@ -98,7 +94,7 @@ const AdminDashboard: React.FC = () => {
             )}
           </tbody>
         </table>
-      </section> */}
+      </section>
     </div>
   );
 };

@@ -16,7 +16,7 @@ const AllPoolsPage = () => {
       const fetchPools = async () => {
         try {
           const endpoint = searchTerm ? `/api/pools?search=${searchTerm}` : '/api/pools';
-          const data = await apiCall(endpoint, 'GET');
+          const data = await apiCall<Pool[]>(endpoint, 'GET');
           setPools(data);
           setError(null);
         } catch (err: unknown) {

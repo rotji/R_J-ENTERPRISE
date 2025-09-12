@@ -46,7 +46,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
         throw new Error('You must be logged in to join a pool.');
       }
 
-      const updatedPool = await apiCall(`/api/pools/${pool._id}/join`, 'POST', {}, token);
+      const updatedPool = await apiCall<Pool>(`/api/pools/${pool._id}/join`, 'POST', {}, token);
 
       setMemberCount(updatedPool.members.length);
       setIsJoined(true);
