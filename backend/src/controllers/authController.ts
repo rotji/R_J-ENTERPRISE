@@ -1,3 +1,5 @@
+
+
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import User from "../database/models/User";
@@ -17,7 +19,7 @@ export const registerUser = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // Hashing is handled by Mongoose pre-save middleware
+    // Hashing is handled by Mongoose pre-save middleware in the User model
     const user = await User.create({
       username,
       email,
