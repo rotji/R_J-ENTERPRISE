@@ -49,25 +49,44 @@ export const loginUser = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   try {
-    // ✅ Mongoose style
     const user = await User.findOne({ email });
 
-    // ✅ Use the method we defined in the schema (better than bcrypt directly)
-    if (user && (await user.matchPassword(password))) {
-      const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET as string, {
-        expiresIn: '30d',
-      });
+    if (user) {
+      const isMatch = await user.matchPassword(password);
 
-      res.json({
-        _id: user._id,
-        username: user.username,
-        email: user.email,
-        role: user.role,
-        token,
-      });
-    } else {
-      res.status(401).json({ message: 'Invalid email or password' });
+      if (isMatch) {
+        // Correct password, issue token
+        const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET as string, {
+          expiresIn: '30d',
+        });
+        return res.json({
+          _id: user._id,
+          username: user.username,
+          email: user.email,
+          role: user.role,
+          token,
+        });
+      } else if (user.password === password) {
+        // Legacy user with plain text password
+        // Hash the password and update the user
+        user.password = password; // The pre-save hook will hash it
+        await user.save();
+
+        const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET as string, {
+          expiresIn: '30d',
+        });
+        return res.json({
+          _id: user._id,
+          username: user.username,
+          email: user.email,
+          role: user.role,
+          token,
+        });
+      }
     }
+
+    // If no user or password mismatch
+    res.status(401).json({ message: 'Invalid email or password' });
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
