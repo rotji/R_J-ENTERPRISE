@@ -49,13 +49,17 @@ export const loginUser = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   try {
+    if (!process.env.JWT_SECRET) {
+      console.error('FATAL ERROR: JWT_SECRET is not defined.');
+      return res.status(500).json({ message: 'Server configuration error' });
+    }
+
     const user = await User.findOne({ email });
 
     if (user) {
       const isMatch = await user.matchPassword(password);
 
-      if (isMatch) {
-        // Correct password, issue token
+      const issueToken = () => {
         const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET as string, {
           expiresIn: '30d',
         });
@@ -66,28 +70,23 @@ export const loginUser = async (req: Request, res: Response) => {
           role: user.role,
           token,
         });
+      };
+
+      if (isMatch) {
+        return issueToken();
       } else if (user.password === password) {
         // Legacy user with plain text password
         // Hash the password and update the user
         user.password = password; // The pre-save hook will hash it
         await user.save();
-
-        const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET as string, {
-          expiresIn: '30d',
-        });
-        return res.json({
-          _id: user._id,
-          username: user.username,
-          email: user.email,
-          role: user.role,
-          token,
-        });
+        return issueToken();
       }
     }
 
     // If no user or password mismatch
     res.status(401).json({ message: 'Invalid email or password' });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error });
+    console.error('Login Error:', error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
