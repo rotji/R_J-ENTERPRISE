@@ -1,3 +1,5 @@
+
+
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import User from "../database/models/User";
@@ -37,8 +39,7 @@ export const registerUser = async (req: Request, res: Response) => {
       const messages = Object.values(error.errors).map((err: any) => err.message);
       return res.status(400).json({ message: messages.join(', ') });
     }
-    console.error('--- UNCAUGHT REGISTRATION ERROR ---');
-    console.error(error);
+    console.error('Registration Error:', error);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -76,17 +77,18 @@ export const loginUser = async (req: Request, res: Response) => {
       if (isMatch) {
         return issueToken();
       } else if (user.password === password) {
-        // Legacy user with plain text password, hash and save
-        user.password = password;
+        // Legacy user with plain text password
+        // Hash the password and update the user
+        user.password = password; // The pre-save hook will hash it
         await user.save();
         return issueToken();
       }
     }
 
+    // If no user or password mismatch
     res.status(401).json({ message: 'Invalid email or password' });
   } catch (error) {
-    console.error('--- UNCAUGHT LOGIN ERROR ---');
-    console.error(error);
+    console.error('Login Error:', error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
