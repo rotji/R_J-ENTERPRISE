@@ -8,18 +8,15 @@ import User from "../database/models/User";
 // @route   POST /api/auth/register
 // @access  Public
 export const registerUser = async (req: Request, res: Response) => {
-  // ✅ Use "username" instead of "name" to match the User schema
   const { username, email, password } = req.body;
 
   try {
-    // ✅ Mongoose style: no "where"
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // Hashing is handled by Mongoose pre-save middleware in the User model
     const user = await User.create({
       username,
       email,
@@ -37,8 +34,13 @@ export const registerUser = async (req: Request, res: Response) => {
       role: user.role,
       token,
     });
-  } catch (error) {
-    res.status(500).json({ message: "Server error", error });
+  } catch (error: any) {
+    if (error.name === 'ValidationError') {
+      const messages = Object.values(error.errors).map((err: any) => err.message);
+      return res.status(400).json({ message: messages.join(', ') });
+    }
+    console.error('Registration Error:', error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
