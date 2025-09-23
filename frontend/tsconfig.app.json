@@ -19,7 +19,12 @@
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+
+    /* ✅ Add this for Vitest + jest-dom */
+    "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
-  "include": ["src"]
+
+  /* ✅ Include tests + setup file */
+  "include": ["src", "tests", "src/setupTests.ts"]
 }
