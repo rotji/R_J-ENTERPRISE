@@ -74,30 +74,6 @@ describe('Pool Routes Logic Tests', () => {
   });
 
   describe('Pool Listing Route Logic', () => {
-    const mockPools = [
-      {
-        _id: new mongoose.Types.ObjectId('507f1f77bcf86cd799439012'),
-        title: 'Rice Pool',
-        description: 'Premium rice for bulk buying',
-        amount: 50,
-        location: 'Lagos',
-        creator: mockUser._id,
-        members: [],
-        status: 'open',
-        createdAt: new Date('2025-01-01'),
-      },
-      {
-        _id: new mongoose.Types.ObjectId('507f1f77bcf86cd799439013'),
-        title: 'Beans Pool',
-        description: 'Quality beans for families',
-        amount: 30,
-        location: 'Abuja',
-        creator: mockUser._id,
-        members: [mockUser._id],
-        status: 'open',
-        createdAt: new Date('2025-01-02'),
-      },
-    ];
 
     it('should structure search query correctly', () => {
       const searchTerm = 'rice';
@@ -121,7 +97,17 @@ describe('Pool Routes Logic Tests', () => {
     });
 
     it('should validate pool data structure', () => {
-      const pool = mockPools[0];
+      const pool = {
+        _id: new mongoose.Types.ObjectId('507f1f77bcf86cd799439012'),
+        title: 'Rice Pool',
+        description: 'Premium rice for bulk buying',
+        amount: 50,
+        location: 'Lagos',
+        creator: mockUser._id,
+        members: [],
+        status: 'open',
+        createdAt: new Date('2025-01-01'),
+      };
       
       expect(pool._id).toBeDefined();
       expect(pool.title).toBeDefined();
