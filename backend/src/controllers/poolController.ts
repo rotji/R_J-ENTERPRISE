@@ -1,4 +1,5 @@
 import { Response } from 'express';
+import { Schema } from 'mongoose';
 import asyncHandler from '../utils/asyncHandler';
 import Pool from '../database/models/Pool';
 import { IRequestWithUser } from '../middleware/authMiddleware';
@@ -14,13 +15,19 @@ const createPool = asyncHandler(async (req: IRequestWithUser, res: Response) => 
     throw new Error('Please provide all required fields');
   }
 
+  const userId = req.user?._id;
+  if (!userId) {
+    res.status(401);
+    throw new Error('User not authenticated');
+  }
+
   const pool = new Pool({
     title,
     description,
     amount,
     closingDate,
     location,
-    creator: req.user._id,
+    creator: userId as Schema.Types.ObjectId,
   });
 
   const createdPool = await pool.save();
@@ -55,8 +62,16 @@ const joinPool = asyncHandler(async (req: IRequestWithUser, res: Response) => {
     throw new Error('Pool not found');
   }
 
+  const userId = req.user?._id;
+  if (!userId) {
+    res.status(401);
+    throw new Error('User not authenticated');
+  }
+
+  const userObjectId = userId as Schema.Types.ObjectId;
+
   const alreadyMember = pool.members.find(
-    (memberId) => memberId.toString() === req.user._id.toString()
+    (memberId) => memberId.toString() === userObjectId.toString()
   );
 
   if (alreadyMember) {
@@ -64,7 +79,7 @@ const joinPool = asyncHandler(async (req: IRequestWithUser, res: Response) => {
     throw new Error('You are already a member of this pool');
   }
 
-  pool.members.push(req.user._id);
+  pool.members.push(userObjectId);
   await pool.save();
 
   res.json(pool);
