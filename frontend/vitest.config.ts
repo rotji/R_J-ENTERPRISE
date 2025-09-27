@@ -5,9 +5,8 @@ export default defineConfig({
   plugins: [react()],
   test: {
     globals: true,
-    environment: 'node', // Use node environment for API tests
+    environment: 'jsdom', // Changed to jsdom for React component testing
     include: ['tests/**/*.{test,spec}.{js,ts,jsx,tsx}'],
-    // Skip setup files that import DOM-related packages
-    // setupFiles: './src/setupTests.ts', // Commented out to avoid jsdom issues
+    setupFiles: './src/setupTests.ts', // Enable setup for React Testing Library
   },
 })
