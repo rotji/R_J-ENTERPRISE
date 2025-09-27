@@ -35,7 +35,7 @@
   .navList {
     flex-direction: row;
     flex-wrap: wrap; /* Allow links to wrap */
-    gap: 0.5rem; /* Adjusted gap for mobile */
+    gap: 1rem; /* Increased gap for better spacing on mobile */
     width: 100%;
     align-items: center;
     padding-bottom: 0.1rem;
@@ -52,7 +52,14 @@
   }
   .navLink {
     font-size: 0.7rem; /* Reduced font size */
-    padding: 0.05rem 0.1rem; /* Reduced padding */
+    padding: 0.25rem 0.5rem; /* Increased padding for better touch targets and visual separation */
+    border-radius: 4px; /* Add slight border radius for better visual distinction */
+    transition: background-color 0.2s ease;
+  }
+  .navLink:hover,
+  .navLink:focus {
+    background-color: rgba(255, 255, 255, 0.1); /* Add hover effect for better mobile interaction */
+    text-decoration: underline;
   }
   .hamburger {
     position: absolute;
