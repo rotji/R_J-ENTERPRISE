@@ -97,13 +97,14 @@ describe('Pool Routes Logic Tests', () => {
     });
 
     it('should validate pool data structure', () => {
+      const mockCreatorId = new mongoose.Types.ObjectId('507f1f77bcf86cd799439999');
       const pool = {
         _id: new mongoose.Types.ObjectId('507f1f77bcf86cd799439012'),
         title: 'Rice Pool',
         description: 'Premium rice for bulk buying',
         amount: 50,
         location: 'Lagos',
-        creator: mockUser._id,
+        creator: mockCreatorId,
         members: [],
         status: 'open',
         createdAt: new Date('2025-01-01'),
@@ -119,8 +120,9 @@ describe('Pool Routes Logic Tests', () => {
     });
 
     it('should handle different pool states', () => {
+      const mockUserId = new mongoose.Types.ObjectId('507f1f77bcf86cd799439999');
       const openPool = { status: 'open', members: [] };
-      const poolWithMembers = { status: 'open', members: [mockUser._id] };
+      const poolWithMembers = { status: 'open', members: [mockUserId] };
       
       expect(openPool.status).toBe('open');
       expect(openPool.members).toHaveLength(0);
@@ -139,7 +141,7 @@ describe('Pool Routes Logic Tests', () => {
       };
       
       // Test adding user to members
-      const userId = mockUser._id;
+      const userId = new mongoose.Types.ObjectId('507f1f77bcf86cd799439011');
       const isAlreadyMember = mockPool.members.includes(userId);
       
       expect(isAlreadyMember).toBe(false);
@@ -155,11 +157,11 @@ describe('Pool Routes Logic Tests', () => {
     });
 
     it('should prevent duplicate membership', () => {
+      const userId = new mongoose.Types.ObjectId('507f1f77bcf86cd799439011');
       const mockPool = {
-        members: [mockUser._id] as any[], // User already a member
+        members: [userId] as any[], // User already a member
       };
       
-      const userId = mockUser._id;
       const isAlreadyMember = mockPool.members.some(
         memberId => memberId.toString() === userId.toString()
       );
