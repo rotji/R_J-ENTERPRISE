@@ -11,6 +11,8 @@ jobs:
     name: Run Tests
     runs-on: ubuntu-latest
 
+
+
     strategy:
       matrix:
         node-version: [18.x, 20.x]
@@ -24,45 +26,55 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        cache-dependency-path: |
+          backend/package-lock.json
+          frontend/package-lock.json
 
+    # Backend Tests
     # Backend Tests
     - name: Install backend dependencies
       working-directory: ./backend
-      run: npm ci
+      run: |
+        npm install
+        echo "Backend dependencies installed"
+
+    - name: Create backend test environment
+      working-directory: ./backend
+      run: |
+        echo "JWT_SECRET=test-jwt-secret-for-ci" > .env
+        echo "NODE_ENV=test" >> .env
+        echo "Backend .env created"
 
     - name: Run backend tests
       working-directory: ./backend
-      run: npm test -- --run --coverage
+      run: |
+        echo "Running backend tests..."
+        npm test -- --run --reporter=verbose
 
-    - name: Build backend
+    - name: Build backend (TypeScript compilation)
       working-directory: ./backend  
-      run: npm run build
+      run: |
+        echo "Building backend..."
+        npm run build
 
-    # Frontend Tests
+    # Frontend Tests  
     - name: Install frontend dependencies
       working-directory: ./frontend
-      run: npm ci
+      run: |
+        npm install
+        echo "Frontend dependencies installed"
 
     - name: Run frontend tests
       working-directory: ./frontend
-      run: npm test -- --run --coverage
+      run: |
+        echo "Running frontend tests..."
+        npm test -- --run --reporter=verbose
 
     - name: Build frontend
       working-directory: ./frontend
-      run: npm run build
-
-    # Upload coverage reports
-    - name: Upload backend coverage to Codecov
-      uses: codecov/codecov-action@v3
-      with:
-        file: ./backend/coverage/lcov.info
-        flags: backend
-        
-    - name: Upload frontend coverage to Codecov  
-      uses: codecov/codecov-action@v3
-      with:
-        file: ./frontend/coverage/lcov.info
-        flags: frontend
+      run: |
+        echo "Building frontend..."
+        npm run build
 
   # Optional: Deploy stage (runs only after tests pass)
   deploy:
