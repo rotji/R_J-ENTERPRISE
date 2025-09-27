@@ -240,7 +240,7 @@ describe('Header Component', () => {
         </RouterWrapper>
       );
 
-      const initialHeaderText = screen.getByText('R_J ENTERPRISE');
+      const initialHeaderText = screen.getByRole('heading', { name: 'R_J ENTERPRISE' });
 
       // Act - Re-render with same props
       rerender(
@@ -250,7 +250,7 @@ describe('Header Component', () => {
       );
 
       // Assert
-      const reRenderedHeaderText = screen.getByText('R_J ENTERPRISE');
+      const reRenderedHeaderText = screen.getByRole('heading', { name: 'R_J ENTERPRISE' });
       expect(reRenderedHeaderText).toBe(initialHeaderText);
     });
   });
@@ -264,8 +264,10 @@ describe('Header Component', () => {
         </RouterWrapper>
       );
 
-      // Assert
-      const navLinks = screen.getAllByRole('link');
+      // Assert - Get links within the header navigation specifically
+      const header = screen.getByRole('banner');
+      const nav = header.querySelector('nav');
+      const navLinks = nav?.querySelectorAll('a') || [];
       expect(navLinks).toHaveLength(7);
     });
 
@@ -277,8 +279,11 @@ describe('Header Component', () => {
         </RouterWrapper>
       );
 
-      // Assert
-      const navLinks = screen.getAllByRole('link');
+      // Assert - Get links within the header navigation specifically  
+      const header = screen.getByRole('banner');
+      const nav = header.querySelector('nav');
+      const navLinks = Array.from(nav?.querySelectorAll('a') || []);
+      
       const expectedOrder = [
         'Home',
         'About',
@@ -289,6 +294,8 @@ describe('Header Component', () => {
         'Bids'
       ];
 
+      expect(navLinks).toHaveLength(expectedOrder.length);
+      
       navLinks.forEach((link, index) => {
         expect(link).toHaveTextContent(expectedOrder[index]);
       });
