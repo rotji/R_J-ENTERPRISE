@@ -5,8 +5,25 @@ export default defineConfig({
   plugins: [react()],
   test: {
     globals: true,
-    environment: 'jsdom', // Changed to jsdom for React component testing
+    environment: 'jsdom',
     include: ['tests/**/*.{test,spec}.{js,ts,jsx,tsx}'],
-    setupFiles: './src/setupTests.ts', // Enable setup for React Testing Library
+    setupFiles: './src/setupTests.ts',
+    // Ensure proper test isolation
+    isolate: true,
+    // Add better compatibility for CI environments
+    pool: 'threads',
+    poolOptions: {
+      threads: {
+        singleThread: true,
+      },
+    },
+    // Handle jsdom compatibility issues and add test isolation
+    deps: {
+      optimizer: {
+        web: {
+          include: ['whatwg-url']
+        }
+      }
+    }
   },
 })
