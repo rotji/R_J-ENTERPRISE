@@ -8,6 +8,9 @@ export default defineConfig({
     environment: 'jsdom',
     include: ['tests/**/*.{test,spec}.{js,ts,jsx,tsx}'],
     setupFiles: './src/setupTests.ts',
+    // Prevent infinite loops and timeouts
+    testTimeout: 5000,
+    hookTimeout: 5000,
     // Ensure proper test isolation
     isolate: true,
     // Add better compatibility for CI environments
