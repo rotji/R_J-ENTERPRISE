@@ -26,7 +26,23 @@ const SupplierDashboard: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const userInfo = localStorage.getItem('userInfo');
+        if (!userInfo) {
+          setError('No token found');
+          setLoading(false);
+          return;
+        }
+        
+        let userData;
+        try {
+          userData = JSON.parse(userInfo);
+        } catch (parseError) {
+          setError('Invalid user data');
+          setLoading(false);
+          return;
+        }
+        
+        const token = userData.token;
         if (!token) {
           setError('No token found');
           setLoading(false);
