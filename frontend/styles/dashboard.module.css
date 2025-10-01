@@ -17,6 +17,24 @@
   padding: 1rem;
   margin-bottom: 1rem;
   border-radius: 8px;
+  position: relative;
+}
+
+.poolNumber {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: #3b82f6;
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .table {

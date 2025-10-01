@@ -7,6 +7,7 @@ interface IPool {
   title: string;
   amount: number;
   status: string;
+  location: string;
 }
 
 interface ITransaction {
@@ -74,11 +75,13 @@ const UserDashboard: React.FC = () => {
 
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>My Pools</h2>
-        {pools.length > 0 ? pools.map((pool) => (
+        {pools.length > 0 ? pools.map((pool, index) => (
           <div key={pool._id} className={styles.card}>
+            <div className={styles.poolNumber}>{index + 1}</div>
             <h3>{pool.title}</h3>
             <p>Amount: ${pool.amount}</p>
             <p>Status: {pool.status}</p>
+            <p>Location: <strong>{pool.location}</strong></p>
           </div>
         )) : <p>No pools found.</p>}
       </section>

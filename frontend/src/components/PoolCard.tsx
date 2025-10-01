@@ -17,9 +17,10 @@ export interface Pool {
 
 interface PoolCardProps {
   pool: Pool;
+  poolNumber: number;
 }
 
-const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
+const PoolCard: React.FC<PoolCardProps> = ({ pool, poolNumber }) => {
   const [memberCount, setMemberCount] = useState(pool.members.length);
   const [isJoined, setIsJoined] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -63,6 +64,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
 
   return (
     <div className={styles.poolCard}>
+      <div className={styles.poolNumber}>{poolNumber}</div>
       <h3>{pool.title}</h3>
       <p>{pool.description}</p>
       <div className={styles.details}>
@@ -70,6 +72,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
         <span>Members: <strong>{memberCount}</strong></span>
       </div>
       <p>Closing Date: {new Date(pool.closingDate).toLocaleDateString()}</p>
+      <p>Location: <strong>{pool.location}</strong></p>
       <div className={styles.actions}>
         <button
           onClick={handleJoin}
