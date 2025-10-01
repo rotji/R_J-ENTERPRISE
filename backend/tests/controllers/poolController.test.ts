@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, beforeAll, afterAll } from 'vitest';
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { createPool, joinPool } from '../../src/controllers/poolController';
 import Pool from '../../src/database/models/Pool';
 import { IRequestWithUser } from '../../src/middleware/authMiddleware';
@@ -14,6 +14,7 @@ vi.mock('../../src/utils/asyncHandler', () => ({
 describe('Pool Controller Integration Tests', () => {
   let mockReq: Partial<IRequestWithUser>;
   let mockRes: Partial<Response>;
+  let mockNext: NextFunction;
   let mockUser: any;
   let mockPool: any;
 
@@ -54,6 +55,8 @@ describe('Pool Controller Integration Tests', () => {
       status: vi.fn().mockReturnThis(),
       json: vi.fn().mockReturnThis(),
     };
+
+    mockNext = vi.fn();
   });
 
   describe('createPool', () => {
@@ -76,7 +79,7 @@ describe('Pool Controller Integration Tests', () => {
       mockPool.save.mockResolvedValue(mockPool); // Return the pool itself
 
       // Act
-      await createPool(mockReq as IRequestWithUser, mockRes as Response);
+      await createPool(mockReq as IRequestWithUser, mockRes as Response, mockNext);
 
       // Assert
       expect(Pool.findOne).toHaveBeenCalled();
@@ -104,7 +107,7 @@ describe('Pool Controller Integration Tests', () => {
 
       // Act & Assert
       await expect(
-        createPool(mockReq as IRequestWithUser, mockRes as Response)
+        createPool(mockReq as IRequestWithUser, mockRes as Response, mockNext)
       ).rejects.toThrow('Please provide all required fields');
 
       expect(mockRes.status).toHaveBeenCalledWith(400);
@@ -123,7 +126,7 @@ describe('Pool Controller Integration Tests', () => {
 
       // Act & Assert
       await expect(
-        createPool(mockReq as IRequestWithUser, mockRes as Response)
+        createPool(mockReq as IRequestWithUser, mockRes as Response, mockNext)
       ).rejects.toThrow('User not authenticated');
 
       expect(mockRes.status).toHaveBeenCalledWith(401);
@@ -140,7 +143,7 @@ describe('Pool Controller Integration Tests', () => {
       vi.mocked(Pool.findById).mockResolvedValue(mockPool);
 
       // Act
-      await joinPool(mockReq as IRequestWithUser, mockRes as Response);
+      await joinPool(mockReq as IRequestWithUser, mockRes as Response, mockNext);
 
       // Assert
       expect(Pool.findById).toHaveBeenCalledWith(mockPool._id.toString());
@@ -155,7 +158,7 @@ describe('Pool Controller Integration Tests', () => {
 
       // Act & Assert
       await expect(
-        joinPool(mockReq as IRequestWithUser, mockRes as Response)
+        joinPool(mockReq as IRequestWithUser, mockRes as Response, mockNext)
       ).rejects.toThrow('Pool not found');
 
       expect(mockRes.status).toHaveBeenCalledWith(404);
@@ -168,7 +171,7 @@ describe('Pool Controller Integration Tests', () => {
 
       // Act & Assert
       await expect(
-        joinPool(mockReq as IRequestWithUser, mockRes as Response)
+        joinPool(mockReq as IRequestWithUser, mockRes as Response, mockNext)
       ).rejects.toThrow('You are already a member of this pool');
 
       expect(mockRes.status).toHaveBeenCalledWith(400);
@@ -181,7 +184,7 @@ describe('Pool Controller Integration Tests', () => {
 
       // Act & Assert
       await expect(
-        joinPool(mockReq as IRequestWithUser, mockRes as Response)
+        joinPool(mockReq as IRequestWithUser, mockRes as Response, mockNext)
       ).rejects.toThrow('User not authenticated');
 
       expect(mockRes.status).toHaveBeenCalledWith(401);
@@ -194,7 +197,7 @@ describe('Pool Controller Integration Tests', () => {
       vi.mocked(Pool.findById).mockResolvedValue(mockPool);
 
       // Act
-      await joinPool(mockReq as IRequestWithUser, mockRes as Response);
+      await joinPool(mockReq as IRequestWithUser, mockRes as Response, mockNext);
 
       // Assert
       expect(mockPool.members).toHaveLength(2);
