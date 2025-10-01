@@ -41,8 +41,8 @@ describe('Pool Controller Integration Tests', () => {
     };
 
     // Setup Pool static methods
-    vi.mocked(Pool.findOne) = vi.fn();
-    vi.mocked(Pool.findById) = vi.fn();
+    Pool.findOne = vi.fn();
+    Pool.findById = vi.fn();
 
     mockReq = {
       user: mockUser,
