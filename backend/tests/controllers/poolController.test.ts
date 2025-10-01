@@ -40,6 +40,10 @@ describe('Pool Controller Integration Tests', () => {
       save: vi.fn().mockResolvedValue(true),
     };
 
+    // Setup Pool static methods
+    vi.mocked(Pool.findOne) = vi.fn();
+    vi.mocked(Pool.findById) = vi.fn();
+
     mockReq = {
       user: mockUser,
       body: {},
@@ -63,6 +67,11 @@ describe('Pool Controller Integration Tests', () => {
         location: 'Test Location',
       };
 
+      // Mock Pool.findOne().sort() chain for getting the last pool number
+      const mockFindOneChain = {
+        sort: vi.fn().mockResolvedValue({ poolNumber: 5 }) // Mock last pool with number 5
+      };
+      vi.mocked(Pool.findOne).mockReturnValue(mockFindOneChain as any);
       vi.mocked(Pool).mockImplementation(() => mockPool as any);
       mockPool.save.mockResolvedValue(mockPool); // Return the pool itself
 
@@ -70,6 +79,8 @@ describe('Pool Controller Integration Tests', () => {
       await createPool(mockReq as IRequestWithUser, mockRes as Response);
 
       // Assert
+      expect(Pool.findOne).toHaveBeenCalled();
+      expect(mockFindOneChain.sort).toHaveBeenCalledWith({ poolNumber: -1 });
       expect(Pool).toHaveBeenCalledWith({
         title: 'Test Pool',
         description: 'Test Description',
@@ -77,6 +88,7 @@ describe('Pool Controller Integration Tests', () => {
         closingDate: mockReq.body.closingDate,
         location: 'Test Location',
         creator: mockUser._id,
+        poolNumber: 6, // Should be last pool number + 1
       });
       expect(mockPool.save).toHaveBeenCalled();
       expect(mockRes.status).toHaveBeenCalledWith(201);
