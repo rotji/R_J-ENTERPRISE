@@ -23,7 +23,16 @@ const createPool = asyncHandler(async (req: IRequestWithUser, res: Response) => 
 
   // Get the highest pool number and increment by 1
   const lastPool = await Pool.findOne().sort({ poolNumber: -1 });
-  const nextPoolNumber = lastPool ? lastPool.poolNumber + 1 : 1;
+  let nextPoolNumber = 1;
+  
+  if (lastPool && typeof lastPool.poolNumber === 'number' && !isNaN(lastPool.poolNumber)) {
+    nextPoolNumber = lastPool.poolNumber + 1;
+  } else {
+    // If no pools exist or poolNumber is invalid, start from 1
+    // Also handle case where existing pools don't have poolNumber field
+    const poolCount = await Pool.countDocuments();
+    nextPoolNumber = poolCount + 1;
+  }
 
   const pool = new Pool({
     title,
@@ -47,12 +56,49 @@ const removeExpiredPools = async () => {
   await Pool.deleteMany({ closingDate: { $lt: currentDate } });
 };
 
+// @desc    Fix existing pools without poolNumber (one-time migration)
+// @route   Internal function
+// @access  Internal
+const fixPoolNumbers = async () => {
+  try {
+    // Find pools without poolNumber or with invalid poolNumber
+    const poolsWithoutNumber = await Pool.find({
+      $or: [
+        { poolNumber: { $exists: false } },
+        { poolNumber: null },
+        { poolNumber: { $type: "string" } }
+      ]
+    }).sort({ createdAt: 1 }); // Oldest first
+
+    if (poolsWithoutNumber.length > 0) {
+      // Get the highest existing valid poolNumber
+      const lastValidPool = await Pool.findOne({ 
+        poolNumber: { $type: "number", $ne: null } 
+      }).sort({ poolNumber: -1 });
+      
+      let nextNumber = lastValidPool ? lastValidPool.poolNumber + 1 : 1;
+
+      // Assign numbers to pools without valid poolNumber
+      for (const pool of poolsWithoutNumber) {
+        pool.poolNumber = nextNumber;
+        await pool.save();
+        nextNumber++;
+      }
+    }
+  } catch (error) {
+    console.error('Error fixing pool numbers:', error);
+  }
+};
+
 // @desc    Get all pools
 // @route   GET /api/pools
 // @access  Public
 const getPools = asyncHandler(async (req: IRequestWithUser, res: Response) => {
   // Remove expired pools before fetching
   await removeExpiredPools();
+
+  // Fix existing pools without poolNumber (one-time migration)
+  await fixPoolNumbers();
 
   const keyword = req.query.search
     ? {

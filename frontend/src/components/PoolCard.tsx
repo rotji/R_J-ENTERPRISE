@@ -64,7 +64,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
 
   return (
     <div className={styles.poolCard}>
-      <div className={styles.poolNumber}>{pool.poolNumber}</div>
+      <div className={styles.poolNumber}>{pool.poolNumber || '?'}</div>
       <h3>{pool.title}</h3>
       <p>{pool.description}</p>
       <div className={styles.details}>
