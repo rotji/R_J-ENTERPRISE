@@ -9,6 +9,7 @@ interface IPool extends Document {
   creator: Schema.Types.ObjectId;
   members: Schema.Types.ObjectId[];
   status: 'open' | 'closed' | 'completed';
+  poolNumber: number;
 }
 
 const poolSchema: Schema = new Schema({
@@ -48,6 +49,11 @@ const poolSchema: Schema = new Schema({
     type: String,
     enum: ['open', 'closed', 'completed'],
     default: 'open',
+  },
+  poolNumber: {
+    type: Number,
+    required: true,
+    unique: true,
   },
 }, {
   timestamps: true,

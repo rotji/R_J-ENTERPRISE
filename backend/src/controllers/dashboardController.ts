@@ -4,6 +4,7 @@ import Pool from '../database/models/Pool';
 import Bid from '../database/models/Bid';
 import Transaction from '../database/models/Transaction';
 import { IRequestWithUser } from '../middleware/authMiddleware';
+import { removeExpiredPools } from './poolController';
 
 // @desc    Get user dashboard data
 // @route   GET /api/dashboards/user
@@ -11,7 +12,10 @@ import { IRequestWithUser } from '../middleware/authMiddleware';
 export const getUserDashboard = async (req: IRequestWithUser, res: Response) => {
   const userId = req.user?._id;
   try {
-    const pools = await Pool.find({ creator: userId });
+    // Remove expired pools before fetching user data
+    await removeExpiredPools();
+    
+    const pools = await Pool.find({ creator: userId }).sort({ poolNumber: -1 });
     const transactions = await Transaction.find({ user: userId });
     res.json({ pools, transactions });
   } catch (error) {

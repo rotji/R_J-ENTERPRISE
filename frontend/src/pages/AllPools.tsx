@@ -49,8 +49,8 @@ const AllPoolsPage = () => {
   } else {
     content = (
       <div className={styles.poolsGrid}>
-        {pools.map((pool, index) => (
-          <PoolCard key={pool._id} pool={pool} poolNumber={index + 1} />
+        {pools.map((pool) => (
+          <PoolCard key={pool._id} pool={pool} />
         ))}
       </div>
     );
