@@ -21,6 +21,10 @@ const createPool = asyncHandler(async (req: IRequestWithUser, res: Response) => 
     throw new Error('User not authenticated');
   }
 
+  // Get the highest pool number and increment by 1
+  const lastPool = await Pool.findOne().sort({ poolNumber: -1 });
+  const nextPoolNumber = lastPool ? lastPool.poolNumber + 1 : 1;
+
   const pool = new Pool({
     title,
     description,
@@ -28,16 +32,28 @@ const createPool = asyncHandler(async (req: IRequestWithUser, res: Response) => 
     closingDate,
     location,
     creator: userId as Schema.Types.ObjectId,
+    poolNumber: nextPoolNumber,
   });
 
   const createdPool = await pool.save();
   res.status(201).json(createdPool);
 });
 
+// @desc    Remove expired pools
+// @route   Internal function
+// @access  Internal
+const removeExpiredPools = async () => {
+  const currentDate = new Date();
+  await Pool.deleteMany({ closingDate: { $lt: currentDate } });
+};
+
 // @desc    Get all pools
 // @route   GET /api/pools
 // @access  Public
 const getPools = asyncHandler(async (req: IRequestWithUser, res: Response) => {
+  // Remove expired pools before fetching
+  await removeExpiredPools();
+
   const keyword = req.query.search
     ? {
         $text: {
@@ -47,7 +63,7 @@ const getPools = asyncHandler(async (req: IRequestWithUser, res: Response) => {
       }
     : {};
 
-  const pools = await Pool.find({ ...keyword }).sort({ createdAt: -1 });
+  const pools = await Pool.find({ ...keyword }).sort({ poolNumber: -1 });
   res.json(pools);
 });
 
@@ -85,4 +101,4 @@ const joinPool = asyncHandler(async (req: IRequestWithUser, res: Response) => {
   res.json(pool);
 });
 
-export { createPool, getPools, joinPool };
+export { createPool, getPools, joinPool, removeExpiredPools };
