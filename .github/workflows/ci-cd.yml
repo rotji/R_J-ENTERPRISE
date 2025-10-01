@@ -11,8 +11,6 @@ jobs:
     name: Run Tests
     runs-on: ubuntu-latest
 
-
-
     strategy:
       matrix:
         node-version: [20.x]
@@ -31,30 +29,35 @@ jobs:
           frontend/package-lock.json
 
     # Backend Tests
-    # Backend Tests
     - name: Install backend dependencies
       working-directory: ./backend
       run: |
         npm install
-        echo "Backend dependencies installed"
+        echo "✅ Backend dependencies installed"
 
     - name: Create backend test environment
       working-directory: ./backend
       run: |
         echo "JWT_SECRET=test-jwt-secret-for-ci" > .env
         echo "NODE_ENV=test" >> .env
-        echo "Backend .env created"
+        echo "✅ Backend .env created"
+
+    - name: Backend TypeScript Check
+      working-directory: ./backend
+      run: |
+        echo "🔍 Checking backend TypeScript..."
+        npm run check
 
     - name: Run backend tests
       working-directory: ./backend
       run: |
-        echo "Running backend tests..."
+        echo "🧪 Running backend tests..."
         npm test -- --run --reporter=verbose
 
-    - name: Build backend (TypeScript compilation)
+    - name: Build backend
       working-directory: ./backend  
       run: |
-        echo "Building backend..."
+        echo "🔨 Building backend..."
         npm run build
 
     # Frontend Tests  
@@ -62,23 +65,33 @@ jobs:
       working-directory: ./frontend
       run: |
         npm install
-        echo "Frontend dependencies installed"
+        echo "✅ Frontend dependencies installed"
+
+    - name: Frontend TypeScript Check
+      working-directory: ./frontend
+      run: |
+        echo "🔍 Checking frontend TypeScript..."
+        npm run build -- --mode development
 
     - name: Run frontend tests
       working-directory: ./frontend
       env:
         NODE_ENV: test
       run: |
-        echo "Running frontend tests..."
+        echo "🧪 Running frontend tests..."
         npm test -- --run --reporter=verbose
 
     - name: Build frontend
       working-directory: ./frontend
       run: |
-        echo "Building frontend..."
+        echo "🔨 Building frontend..."
         npm run build
 
-  # Optional: Deploy stage (runs only after tests pass)
+    - name: ✅ All Tests Passed
+      run: |
+        echo "🎉 All checks passed! Ready for deployment."
+
+  # Only deploy on main branch pushes (after tests pass)
   deploy:
     name: Deploy to Production
     needs: test
@@ -89,8 +102,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: Deploy to production
+    - name: Deploy notification
       run: |
         echo "🚀 Deploying to production..."
+        echo "✅ Tests passed - safe to deploy"
         # Add your deployment commands here
         # e.g., deploy to Vercel, Netlify, Railway, etc.
